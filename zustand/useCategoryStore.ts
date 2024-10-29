@@ -8,7 +8,8 @@ interface CategoryStoreI {
   category: CategoryI | null;
   loading: boolean;
   addCategory: (newCategory: CategoryI) => Promise<void>;
-  fetchCategories: () => void
+  fetchCategories: () => void;
+  deleteCategory: (categoryId: string) => void;
 }
 
 const useCategoryStore = create<CategoryStoreI>((set) => ({
@@ -46,6 +47,19 @@ const useCategoryStore = create<CategoryStoreI>((set) => ({
       set({ loading: false });
     }
   },
+
+  // delete category with id
+  deleteCategory: async (categoryId) => {
+    try {
+      const categoryRef = doc(fireDB, 'categories', categoryId);
+      await deleteDoc(categoryRef);
+      set((state) => ({
+        categories: state.categories.filter(category => category.id !== categoryId)
+      }));
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    }
+  }
 }))
 
 export default useCategoryStore;

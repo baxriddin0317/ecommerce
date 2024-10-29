@@ -5,12 +5,20 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import Loader from "../Loader";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const CategoryDetail = () => {
-  const {categories, fetchCategories, loading} = useCategoryStore();
+  const {categories, fetchCategories, loading, deleteCategory} = useCategoryStore();
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
+
+  const handleDelete = async (id: string) => {
+    if (id) {
+      await deleteCategory(id);
+      toast.success('Product Deleted Successfully');
+    }
+  };
 
   return (
     <div>
@@ -57,7 +65,7 @@ const CategoryDetail = () => {
                                 <Link href={`#`}><CiEdit className="text-green-500 text-2xl mx-auto cursor-pointer" /></Link>
                             </td>
                             <td className="h-12 px-6 transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500">
-                                <button >
+                                <button onClick={() => handleDelete(item.id)}>
                                 <MdDeleteForever className="text-red-500 text-2xl mx-auto cursor-pointer" />
                                 </button>
                             </td>

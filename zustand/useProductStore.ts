@@ -48,7 +48,7 @@ const useProductStore = create<ProductStore>((set) => ({
       if (productData) {
         set({
           product: {
-            id,  // Keep the id since it's not part of the data object
+            id, 
             title: productData.title,
             price: productData.price,
             productImageUrl: productData.productImageUrl,

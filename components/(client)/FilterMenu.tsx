@@ -13,7 +13,7 @@ const FilterMenu = () => {
   }, [fetchCategories]);
 
   if(categories.length == 0){
-    return <div className="flex items-center h-40">
+    return <div className="flex items-center justify-center h-40">
       <Loader />
     </div>
   }

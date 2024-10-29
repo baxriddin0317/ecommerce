@@ -1,40 +1,17 @@
 "use client"
 import Loader from "@/components/Loader";
 import { ProductT } from "@/lib/types";
+import useCategoryStore from "@/zustand/useCategoryStore";
 import useProductStore from "@/zustand/useProductStore";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-const categoryList = [
-  {
-    name: "fashion",
-  },
-  {
-    name: "shirt",
-  },
-  {
-    name: "jacket",
-  },
-  {
-    name: "mobile",
-  },
-  {
-    name: "laptop",
-  },
-  {
-    name: "shoes",
-  },
-  {
-    name: "home",
-  },
-  {
-    name: "books",
-  },
-];
 
 const UpdateProductContent = ({ params }: { params: { id: string } }) => {
   const navigate = useRouter();
   const { product, loading, fetchSingleProduct, updateProduct } = useProductStore();
+  const { categories, fetchCategories } = useCategoryStore();
+
   const [updatedProduct, setUpdatedProduct] = useState<ProductT>({
     id: params.id || '',
     title: '',
@@ -51,6 +28,10 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
       fetchSingleProduct(params.id as string);
     }
   }, [params.id, fetchSingleProduct]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
   
   useEffect(() => {
     if (product) {
@@ -133,12 +114,12 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
               onChange={(e) => setUpdatedProduct({ ...updatedProduct, category: e.target.value })}
             >
               <option disabled>Select Product Category</option>
-              {categoryList.map((value, index) => {
-                const { name } = value;
+              {categories.map((value) => {
+                const { name, id } = value;
                 return (
                   <option
                     className=" first-letter:uppercase"
-                    key={index}
+                    key={id}
                     value={name}
                   >
                     {name}

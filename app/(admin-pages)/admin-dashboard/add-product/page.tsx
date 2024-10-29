@@ -1,40 +1,19 @@
 "use client";
 import Loader from "@/components/Loader";
 import { fireDB } from "@/firebase/FirebaseConfig";
+import useCategoryStore from "@/zustand/useCategoryStore";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
-const categoryList = [
-  {
-    name: "fashion",
-  },
-  {
-    name: "shirt",
-  },
-  {
-    name: "jacket",
-  },
-  {
-    name: "mobile",
-  },
-  {
-    name: "laptop",
-  },
-  {
-    name: "shoes",
-  },
-  {
-    name: "home",
-  },
-  {
-    name: "books",
-  },
-];
 
 const AddProductPage = () => {
   const [loading, setLoading] = useState(false);
+  const { categories, fetchCategories } = useCategoryStore()
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   // navigate
   const navigate = useRouter();
@@ -80,6 +59,7 @@ const AddProductPage = () => {
       toast.error("Add product failed");
     }
   };
+
   return (
     <div>
       <div className="flex justify-center items-center h-screen">
@@ -150,13 +130,13 @@ const AddProductPage = () => {
               }}
               className="w-full px-1 py-2 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none  "
             >
-              <option disabled>Select Product Category</option>
-              {categoryList.map((value, index) => {
-                const { name } = value;
+              <option >Select Product Category</option>
+              {categories.map((value) => {
+                const { name, id } = value;
                 return (
                   <option
                     className=" first-letter:uppercase"
-                    key={index}
+                    key={id}
                     value={name}
                   >
                     {name}
