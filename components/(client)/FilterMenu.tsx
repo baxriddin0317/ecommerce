@@ -23,7 +23,7 @@ const FilterMenu = () => {
       {categories.map(category => (
         <a href={`/category/${category.id}`} key={category.id} className="w-24 text-center space-y-2.5">
           <div className="size-24 relative rounded-2xl overflow-hidden">
-            <Image fill src={category.categoryImgUrl} alt="" className="w-full h-full object-cover" />
+            <img src={category.categoryImgUrl} alt="" className="w-full h-full object-cover" />
           </div>
           <p className="font-medium text-sm capitalize">
             {category.name}

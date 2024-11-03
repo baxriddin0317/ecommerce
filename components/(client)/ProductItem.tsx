@@ -1,9 +1,28 @@
 "use client"
 import useProductStore from '@/zustand/useProductStore'
-import React from 'react'
+import React, { useEffect } from 'react'
+import Loader from '../Loader';
 
-const ProductItem = () => {
-  const {fetchSingleProduct, loading, product} = useProductStore()
+const ProductItem = ({id}: {id:string}) => {
+  const {fetchSingleProduct, loading, product} = useProductStore();
+
+  useEffect(() => {
+    if(id){
+      fetchSingleProduct(id as string);
+    }
+  }, [fetchSingleProduct, id])
+
+  console.log(id, product);
+  
+
+  if (loading || !product) {
+    return (
+      <div className="flex items-center justify-center h-40">
+        <Loader />
+      </div>
+    )
+  }
+
   return (
     <div className="flex gap-10 py-5">
           <div className="rounded-xl overflow-hidden max-w-[416px] w-full h-[512px]">
@@ -14,7 +33,7 @@ const ProductItem = () => {
             />
           </div>
           <div className="space-y-9 w-full">
-            <h1 className="text-xl">162 A</h1>
+            <h1 className="text-xl">{product?.title}</h1>
             <div className="space-y-5">
               <div className="rounded-xl border border-gray-300 flex items-center gap-8 w-fit py-1.5 px-2">
                 <button className="size-9 bg-gray-100 flex items-center justify-center rounded-full">
@@ -34,7 +53,7 @@ const ProductItem = () => {
                   </svg>
                 </button>
                 <div className="w-14 border-b">
-                  <span className="block text-center">1</span>
+                  <span className="block text-center">{product.quantity}</span>
                 </div>
                 <button className="size-9 bg-indigo-500 text-white flex items-center justify-center rounded-full">
                   <svg
@@ -55,7 +74,7 @@ const ProductItem = () => {
               </div>
               <div>
                 <div className="text-sm text-gray-500">Umumiy</div>
-                <div className="font-bold">1 490 000 UZS</div>
+                <div className="font-bold">{product.price} UZS</div>
               </div>
               <button className="flex items-center justify-center gap-2 bg-indigo-500 transition-all ease-in-out hover:bg-indigo-600 rounded-xl max-w-lg w-full text-white p-3">
                 <svg

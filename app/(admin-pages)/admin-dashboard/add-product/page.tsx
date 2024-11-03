@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 const AddProductPage = () => {
   const [loading, setLoading] = useState(false);
-  const { categories, fetchCategories } = useCategoryStore()
+  const { categories, fetchCategories } = useCategoryStore();
 
   useEffect(() => {
     fetchCategories();
@@ -48,6 +48,7 @@ const AddProductPage = () => {
 
     setLoading(true);
     try {
+
       const productRef = collection(fireDB, "products");
       await addDoc(productRef, product);
       toast.success("Add product successfully");
@@ -70,7 +71,7 @@ const AddProductPage = () => {
           <div className="mb-5">
             <h2 className="text-center text-2xl font-bold text-pink-500 "></h2>
           </div>
-          {/* Input One  */}
+          {/* Input title  */}
           <div className="mb-3">
             <input
               type="text"
@@ -86,7 +87,7 @@ const AddProductPage = () => {
               className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
             />
           </div>
-          {/* Input Two  */}
+          {/* Input price  */}
           <div className="mb-3">
             <input
               type="number"
@@ -102,7 +103,7 @@ const AddProductPage = () => {
               className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
             />
           </div>
-          {/* Input Three  */}
+          {/* Input img  */}
           <div className="mb-3">
             <input
               type="text"
@@ -115,10 +116,11 @@ const AddProductPage = () => {
                 });
               }}
               placeholder="Product Image Url"
+              accept="image/*"
               className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
             />
           </div>
-          {/* Input Four  */}
+          {/* Input category  */}
           <div className="mb-3">
             <select
               value={product.category}
@@ -145,7 +147,7 @@ const AddProductPage = () => {
               })}
             </select>
           </div>
-          {/* Input Five  */}
+          {/* Input description  */}
           <div className="mb-3">
             <textarea
               value={product.description}

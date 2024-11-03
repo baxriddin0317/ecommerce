@@ -45,7 +45,6 @@ const CategoryDetail = () => {
                         <th scope="col" className="h-12 px-6 text-md border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100 font-bold fontPara">S.No.</th>
                         <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Category Name</th>
                         <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Category Image</th>
-                        <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Update</th>
                         <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Delete</th>
                     </tr>
                     {categories.map((item,idx) => (
@@ -60,9 +59,6 @@ const CategoryDetail = () => {
                                 <div className="flex justify-center py-1">
                                     <img className="w-20 " src={item.categoryImgUrl} alt="" />
                                 </div>
-                            </td>
-                            <td className="h-12 px-6 transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500">
-                                <Link href={`#`}><CiEdit className="text-green-500 text-2xl mx-auto cursor-pointer" /></Link>
                             </td>
                             <td className="h-12 px-6 transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500">
                                 <button onClick={() => handleDelete(item.id)}>

@@ -25,7 +25,7 @@ const ProductSlug = ({ params }: { params: { slug: string } }) => {
           </svg>
           <span>Orqaga</span>
         </a>
-        <ProductItem />
+        <ProductItem id={params.slug} />
       </div>
     </main>
   );
