@@ -2,15 +2,11 @@
 import useProductStore from "@/zustand/useProductStore";
 import React, { useEffect, useState } from "react";
 import Loader from "../Loader";
-import { ProductT } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import useCartProductStore from "@/zustand/useCartStore";
 import toast from "react-hot-toast";
 
 const ProductItem = ({ id }: { id: string }) => {
   const { fetchSingleProduct, loading, product } = useProductStore();
-  const { addCartProduct, load } = useCartProductStore();
-  const [newProduct, setNewProduct] = useState<ProductT | null>(null);
   // navigate
   const navigate = useRouter();
 
@@ -20,13 +16,7 @@ const ProductItem = ({ id }: { id: string }) => {
     }
   }, [fetchSingleProduct, id]);
 
-  useEffect(() => {
-    if (product) {
-      setNewProduct(product);
-    }
-  }, [product]);
-
-  if (loading || !product || !newProduct) {
+  if (loading || !product) {
     return (
       <div className="flex items-center justify-center h-40">
         <Loader />
@@ -35,18 +25,15 @@ const ProductItem = ({ id }: { id: string }) => {
   }
 
   const handleAddQuantity = () => {
-    let updateP = { ...newProduct, quantity: newProduct?.quantity + 1 };
-    setNewProduct(updateP);
+    // my logic
   };
 
   const handledeleteQuantity = () => {
-    let updateP = { ...newProduct, quantity: newProduct?.quantity - 1 };
-    setNewProduct(updateP);
+    // my logic
   };
 
   const handleSubmit = async () => {
     try {
-      await addCartProduct(newProduct);
       toast.success("Add cart product successfully");
       navigate.push("/");
     } catch (error) {
@@ -66,7 +53,7 @@ const ProductItem = ({ id }: { id: string }) => {
           <div className="rounded-xl border border-gray-300 flex items-center gap-8 w-fit py-1.5 px-2">
             <button
               onClick={handledeleteQuantity}
-              disabled={newProduct?.quantity == 1}
+              disabled={product.quantity == 1}
               className="size-9 bg-gray-100 flex items-center justify-center rounded-full"
             >
               <svg
@@ -85,7 +72,7 @@ const ProductItem = ({ id }: { id: string }) => {
               </svg>
             </button>
             <div className="w-14 border-b">
-              <span className="block text-center">{newProduct?.quantity}</span>
+              <span className="block text-center">{product.quantity}</span>
             </div>
             <button
               onClick={handleAddQuantity}
@@ -115,45 +102,39 @@ const ProductItem = ({ id }: { id: string }) => {
             onClick={handleSubmit}
             className="flex items-center justify-center gap-2 bg-indigo-500 transition-all ease-in-out hover:bg-indigo-600 rounded-xl max-w-lg w-full text-white p-3"
           >
-            {load ? (
-              <Loader />
-            ) : (
-              <>
-                <svg
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6 4H18C20.2091 4 22 5.79086 22 8V13C22 15.2091 20.2091 17 18 17H10C7.79086 17 6 15.2091 6 13V4ZM6 4C6 2.89543 5.10457 2 4 2H2"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M11 20.5C11 21.3284 10.3284 22 9.5 22C8.67157 22 8 21.3284 8 20.5C8 19.6716 8.67157 19 9.5 19C10.3284 19 11 19.6716 11 20.5Z"
-                    stroke="white"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M20 20.5C20 21.3284 19.3284 22 18.5 22C17.6716 22 17 21.3284 17 20.5C17 19.6716 17.6716 19 18.5 19C19.3284 19 20 19.6716 20 20.5Z"
-                    stroke="white"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M11 12C13.3561 13.3404 14.6476 13.3263 17 12"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span>Savatga qo'shish</span>
-              </>
-            )}
+            <svg
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 4H18C20.2091 4 22 5.79086 22 8V13C22 15.2091 20.2091 17 18 17H10C7.79086 17 6 15.2091 6 13V4ZM6 4C6 2.89543 5.10457 2 4 2H2"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M11 20.5C11 21.3284 10.3284 22 9.5 22C8.67157 22 8 21.3284 8 20.5C8 19.6716 8.67157 19 9.5 19C10.3284 19 11 19.6716 11 20.5Z"
+                stroke="white"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M20 20.5C20 21.3284 19.3284 22 18.5 22C17.6716 22 17 21.3284 17 20.5C17 19.6716 17.6716 19 18.5 19C19.3284 19 20 19.6716 20 20.5Z"
+                stroke="white"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M11 12C13.3561 13.3404 14.6476 13.3263 17 12"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span>Savatga qo'shish</span>
           </button>
         </div>
       </div>

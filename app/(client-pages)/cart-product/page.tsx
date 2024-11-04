@@ -5,13 +5,9 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const CartProduct = () => {
-  const { cartProducts, fetchCartProducts } = useCartProductStore();
+  const { cartProducts } = useCartProductStore();
   // navigate
   const navigate = useRouter();
-
-  useEffect(() => {
-    fetchCartProducts();
-  }, [fetchCartProducts]);
 
   return (
     <main className="bg-body min-h-screen">

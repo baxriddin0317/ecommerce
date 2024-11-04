@@ -6,13 +6,9 @@ import React, { useEffect } from 'react'
 import { BsFillCartCheckFill } from 'react-icons/bs'
 
 const Header = () => {
-  const { cartProducts, fetchCartProducts } = useCartProductStore()
+  const { cartProducts } = useCartProductStore()
   // navigate
   const navigate = useRouter();
-
-  useEffect(() => {
-    fetchCartProducts();
-  }, [fetchCartProducts]);
 
   const handleNavigate = () => {
     if(cartProducts.length > 0){
