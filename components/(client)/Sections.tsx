@@ -14,15 +14,13 @@ const Sections = () => {
     fetchCategories();
   }, [fetchCategories, fetchProducts]);
 
-  console.log(products);
-  
   return (
     <>
     {categories.map(category => (
       <div key={category.id}>
         <CategoryHeader heading={category.name} link={`/category/${category.id}`} />
-        <div className="flex gap-3.5">
-          {products.filter(product => product.category === category.name).map(product => (
+        <div className="flex gap-3.5 min-h-72">
+          {products.filter(product => product.category === category.name).slice(0, 8).map(product => (
             <Card key={product.id} title={product.title} imgUrl={product.productImageUrl} price={product.price} href={`/products/${product.id}`} />
           ))}
         </div>

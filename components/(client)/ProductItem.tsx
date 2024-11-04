@@ -1,82 +1,124 @@
-"use client"
-import useProductStore from '@/zustand/useProductStore'
-import React, { useEffect } from 'react'
-import Loader from '../Loader';
+"use client";
+import useProductStore from "@/zustand/useProductStore";
+import React, { useEffect, useState } from "react";
+import Loader from "../Loader";
+import { ProductT } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import useCartProductStore from "@/zustand/useCartStore";
+import toast from "react-hot-toast";
 
-const ProductItem = ({id}: {id:string}) => {
-  const {fetchSingleProduct, loading, product} = useProductStore();
+const ProductItem = ({ id }: { id: string }) => {
+  const { fetchSingleProduct, loading, product } = useProductStore();
+  const { addCartProduct, load } = useCartProductStore();
+  const [newProduct, setNewProduct] = useState<ProductT | null>(null);
+  // navigate
+  const navigate = useRouter();
 
   useEffect(() => {
-    if(id){
+    if (id) {
       fetchSingleProduct(id as string);
     }
-  }, [fetchSingleProduct, id])
+  }, [fetchSingleProduct, id]);
 
-  console.log(id, product);
-  
+  useEffect(() => {
+    if (product) {
+      setNewProduct(product);
+    }
+  }, [product]);
 
-  if (loading || !product) {
+  if (loading || !product || !newProduct) {
     return (
       <div className="flex items-center justify-center h-40">
         <Loader />
       </div>
-    )
+    );
   }
+
+  const handleAddQuantity = () => {
+    let updateP = { ...newProduct, quantity: newProduct?.quantity + 1 };
+    setNewProduct(updateP);
+  };
+
+  const handledeleteQuantity = () => {
+    let updateP = { ...newProduct, quantity: newProduct?.quantity - 1 };
+    setNewProduct(updateP);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await addCartProduct(newProduct);
+      toast.success("Add cart product successfully");
+      navigate.push("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Add cart product failed");
+    }
+  };
 
   return (
     <div className="flex gap-10 py-5">
-          <div className="rounded-xl overflow-hidden max-w-[416px] w-full h-[512px]">
-            <img
-              src="/sample.webp"
-              alt=""
-              className="w-full h-full object-cover"
-            />
+      <div className="rounded-xl overflow-hidden max-w-[416px] w-full h-[512px]">
+        <img src={product.productImageUrl} alt="" className="w-full h-full object-cover" />
+      </div>
+      <div className="space-y-9 w-full">
+        <h1 className="text-xl">{product?.title}</h1>
+        <div className="space-y-5">
+          <div className="rounded-xl border border-gray-300 flex items-center gap-8 w-fit py-1.5 px-2">
+            <button
+              onClick={handledeleteQuantity}
+              disabled={newProduct?.quantity == 1}
+              className="size-9 bg-gray-100 flex items-center justify-center rounded-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 12h14"
+                />
+              </svg>
+            </button>
+            <div className="w-14 border-b">
+              <span className="block text-center">{newProduct?.quantity}</span>
+            </div>
+            <button
+              onClick={handleAddQuantity}
+              className="size-9 bg-indigo-500 text-white flex items-center justify-center rounded-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+            </button>
           </div>
-          <div className="space-y-9 w-full">
-            <h1 className="text-xl">{product?.title}</h1>
-            <div className="space-y-5">
-              <div className="rounded-xl border border-gray-300 flex items-center gap-8 w-fit py-1.5 px-2">
-                <button className="size-9 bg-gray-100 flex items-center justify-center rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="size-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 12h14"
-                    />
-                  </svg>
-                </button>
-                <div className="w-14 border-b">
-                  <span className="block text-center">{product.quantity}</span>
-                </div>
-                <button className="size-9 bg-indigo-500 text-white flex items-center justify-center rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="size-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div>
-                <div className="text-sm text-gray-500">Umumiy</div>
-                <div className="font-bold">{product.price} UZS</div>
-              </div>
-              <button className="flex items-center justify-center gap-2 bg-indigo-500 transition-all ease-in-out hover:bg-indigo-600 rounded-xl max-w-lg w-full text-white p-3">
+          <div>
+            <div className="text-sm text-gray-500">Umumiy</div>
+            <div className="font-bold">{product.price} UZS</div>
+          </div>
+          <button
+            onClick={handleSubmit}
+            className="flex items-center justify-center gap-2 bg-indigo-500 transition-all ease-in-out hover:bg-indigo-600 rounded-xl max-w-lg w-full text-white p-3"
+          >
+            {load ? (
+              <Loader />
+            ) : (
+              <>
                 <svg
                   width={24}
                   height={24}
@@ -110,11 +152,13 @@ const ProductItem = ({id}: {id:string}) => {
                   />
                 </svg>
                 <span>Savatga qo'shish</span>
-              </button>
-            </div>
-          </div>
+              </>
+            )}
+          </button>
         </div>
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default ProductItem
+export default ProductItem;

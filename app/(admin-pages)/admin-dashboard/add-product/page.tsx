@@ -25,7 +25,7 @@ const AddProductPage = () => {
     productImageUrl: "",
     category: "",
     description: "",
-    quantity: 1,
+    quantity: 0,
     time: Timestamp.now(),
     date: new Date().toLocaleString("en-US", {
       month: "short",
