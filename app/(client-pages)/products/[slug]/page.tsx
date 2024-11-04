@@ -1,11 +1,12 @@
 import ProductItem from "@/components/(client)/ProductItem";
+import Link from "next/link";
 import React from "react";
 
 const ProductSlug = ({ params }: { params: { slug: string } }) => {
   return (
     <main className="bg-body min-h-screen">
       <div className="max-w-7xl mx-auto px-4 lg:px-10 pb-24">
-        <a
+        <Link
           href="/"
           className="flex items-center gap-3 w-fit text-gray-500 text-sm transition-all ease-in-out hover:text-indigo-500 py-4"
         >
@@ -24,7 +25,7 @@ const ProductSlug = ({ params }: { params: { slug: string } }) => {
             />
           </svg>
           <span>Orqaga</span>
-        </a>
+        </Link>
         <ProductItem id={params.slug} />
       </div>
     </main>

@@ -9,6 +9,7 @@ interface CategoryStoreI {
   loading: boolean;
   addCategory: (newCategory: CategoryI) => Promise<void>;
   fetchCategories: () => void;
+  fetchSingleCategory: (id: string) => void
   deleteCategory: (categoryId: string) => void;
 }
 
@@ -26,6 +27,33 @@ const useCategoryStore = create<CategoryStoreI>((set) => ({
     } catch (error) {
       console.error('Error adding category:', error);
       set({ loading: false });
+    }
+  },
+
+  // fetch single category with id
+  fetchSingleCategory: async (id) => {
+    set({loading: true});
+    try {
+      const categoryDoc = await getDoc(doc(fireDB, 'categories', id));
+      const categoryData = categoryDoc.data();
+
+      if (categoryData) {
+        set({
+          category: {
+            id, 
+            name: categoryData.name,
+            categoryImgUrl: categoryData.categoryImgUrl,
+          } as CategoryI,
+          loading: false
+        });
+      } else {
+        set({ loading: false });
+        console.error('category not found');
+      }
+      
+      
+    } catch (error) {
+      
     }
   },
 

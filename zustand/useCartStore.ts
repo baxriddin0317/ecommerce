@@ -1,12 +1,6 @@
-import { fireDB } from '@/firebase/FirebaseConfig';
 import { ProductT } from '@/lib/types';
-import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
 import {create} from 'zustand';
 import { persist } from 'zustand/middleware';
-
-interface ProductStore {
-
-}
 
 interface BasketState {
   cartProducts: ProductT[];
@@ -32,11 +26,11 @@ const useCartProductStore = create<BasketState>()(
           if (existingItem) {
             return {
               cartProducts: state.cartProducts.map((item) =>
-                item.id === product.id ? { ...item, quantity: item.quantity + product.quantity } : item
+                item.id === product.id ? { ...item, quantity: product.quantity } : item
               ),
             };
           } else {
-            return { cartProducts: [...state.cartProducts, { ...product, quantity: 1 }] };
+            return { cartProducts: [...state.cartProducts, { ...product, quantity: product.quantity }] };
           }
         });
       },
@@ -59,7 +53,7 @@ const useCartProductStore = create<BasketState>()(
       
       getItemQuantity: (id) => {
         const item = get().cartProducts.find((item) => item.id === id);
-        return item ? item.quantity : 0;
+        return item ? item.quantity : 1;
       },
     }),
     {

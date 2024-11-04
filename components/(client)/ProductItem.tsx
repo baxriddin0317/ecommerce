@@ -4,17 +4,23 @@ import React, { useEffect, useState } from "react";
 import Loader from "../Loader";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import useCartProductStore from "@/zustand/useCartStore";
 
 const ProductItem = ({ id }: { id: string }) => {
   const { fetchSingleProduct, loading, product } = useProductStore();
+  const { addToBasket, getItemQuantity } = useCartProductStore();
+  const [quantity, setQuantity] = useState(1);
+
   // navigate
   const navigate = useRouter();
+  const quantityInBasket = getItemQuantity(id);
 
   useEffect(() => {
     if (id) {
       fetchSingleProduct(id as string);
+      setQuantity(quantityInBasket || 1);
     }
-  }, [fetchSingleProduct, id]);
+  }, [fetchSingleProduct, id, quantityInBasket]);
 
   if (loading || !product) {
     return (
@@ -25,21 +31,17 @@ const ProductItem = ({ id }: { id: string }) => {
   }
 
   const handleAddQuantity = () => {
-    // my logic
+    setQuantity(quantity + 1);
   };
 
   const handledeleteQuantity = () => {
-    // my logic
+    setQuantity(quantity - 1);
   };
 
   const handleSubmit = async () => {
-    try {
-      toast.success("Add cart product successfully");
-      navigate.push("/");
-    } catch (error) {
-      console.log(error);
-      toast.error("Add cart product failed");
-    }
+    addToBasket({...product, quantity: quantity});
+    toast.success("Add cart product successfully");
+    navigate.push("/");
   };
 
   return (
@@ -53,7 +55,7 @@ const ProductItem = ({ id }: { id: string }) => {
           <div className="rounded-xl border border-gray-300 flex items-center gap-8 w-fit py-1.5 px-2">
             <button
               onClick={handledeleteQuantity}
-              disabled={product.quantity == 1}
+              disabled={quantity == 1}
               className="size-9 bg-gray-100 flex items-center justify-center rounded-full"
             >
               <svg
@@ -72,7 +74,7 @@ const ProductItem = ({ id }: { id: string }) => {
               </svg>
             </button>
             <div className="w-14 border-b">
-              <span className="block text-center">{product.quantity}</span>
+              <span className="block text-center">{quantity}</span>
             </div>
             <button
               onClick={handleAddQuantity}
