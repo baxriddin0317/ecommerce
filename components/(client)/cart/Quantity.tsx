@@ -5,16 +5,18 @@ import { HiMinus } from "react-icons/hi";
 import { LuPlus } from "react-icons/lu";
 
 const Quantity = ({id}: {id:string}) => {
-  const { cartProducts, incrementQuantity, decrementQuantity, getItemQuantity } = useCartProductStore();
+  const { cartProducts, incrementQuantity, decrementQuantity, getItemQuantity, calculateTotals } = useCartProductStore();
   
   const quantityInBasket = getItemQuantity(id);
 
   const handleAddQuantity = () => {
     incrementQuantity(id);
+    calculateTotals();
   };
 
   const handleDeleteQuantity = () => {
     decrementQuantity(id);
+    calculateTotals();
   };
 
 

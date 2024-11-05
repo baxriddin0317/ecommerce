@@ -6,12 +6,13 @@ interface BasketState {
   cartProducts: ProductT[];
   cartProduct: ProductT | null;
   load: boolean;
+  totalQuantity: number;
+  totalPrice: number;
   addToBasket: (product: ProductT) => void;
   incrementQuantity: (id: string) => void;
   decrementQuantity: (id: string) => void;
   getItemQuantity: (id: string) => number;  
-  getTotalQuantity: () => number;
-  getTotalPrice: () => number; 
+  calculateTotals: () => void;
 }
 
 const useCartProductStore = create<BasketState>()(
@@ -20,6 +21,8 @@ const useCartProductStore = create<BasketState>()(
       cartProducts: [],
       cartProduct: null,
       load: false, 
+      totalQuantity: 0,
+      totalPrice: 0,
       
       addToBasket: (product) => {
         set((state) => {
@@ -74,12 +77,10 @@ const useCartProductStore = create<BasketState>()(
         return item ? item.quantity : 1;
       },
 
-      getTotalQuantity: () => {
-        return get().cartProducts.reduce((acc, curr) => acc + curr.quantity, 0);
-      },
-
-      getTotalPrice: () => {
-        return get().cartProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
+      calculateTotals: () => {
+        const totalQuantity = get().cartProducts.reduce((acc, item) => acc + item.quantity, 0);
+        const totalPrice = get().cartProducts.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        set({ totalQuantity, totalPrice });
       },
     }),
     {

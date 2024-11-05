@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+"use client"
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
-const SubmitModal = () => {
+interface props {
+  setOpen: Dispatch<SetStateAction<boolean>>
+}
+
+const SubmitModal = ({setOpen}: props) => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handlePhoneNumberChange = (e) => {
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
     if (value.startsWith('998')) {
       value = value.slice(3); // Remove "998" from input if present
@@ -19,8 +24,9 @@ const SubmitModal = () => {
   };
 
   return (
-    <div className="fixed bg-black/80 z-10 w-full h-full inset-0 flex items-center justify-center">
-      <div className="max-w-sm w-full bg-white rounded-md space-y-3 p-5">
+    <div className="fixed z-99 w-full h-full inset-0 flex items-center justify-center">
+      <div onClick={() => setOpen(false)} className='absolute inset-0 size-full bg-black/80 z-0'></div>
+      <div className="max-w-sm w-full bg-white rounded-md space-y-3 p-5 z-10">
         <div>
           <label htmlFor="first-name" className="block text-sm font-medium text-gray-900">
             Ism
@@ -60,7 +66,7 @@ const SubmitModal = () => {
               type="text"
               value={phoneNumber}
               onChange={handlePhoneNumberChange}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:outline-none focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+              className="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:outline-none focus:ring-inset focus:ring-indigo-600 sm:text-sm"
               placeholder="+998 (__) ___-__-__"
             />
           </div>
