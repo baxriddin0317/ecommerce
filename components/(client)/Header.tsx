@@ -20,15 +20,36 @@ const Header = () => {
     <header className="shadow border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between py-3.5 px-4 lg:px-10">
         <div className="flex items-center gap-5">
-          <div className="w-24 h-12 relative">
+          <div className="w-24 h-12 relative shrink-0">
             <Image fill alt='logo' src="/logo.png" className="w-full h-full" />
           </div>
-          <div className="flex items-center gap-3">
-            <div className="relative max-w-xs w-full shrink-0">
-              <input type="search" placeholder="Mahsulotlarni qidirish" className="rounded-lg border bg-gray-50 w-full focus:outline-none p-3 pl-12" />
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 text-gray-500 absolute top-1/2 -translate-y-1/2 left-3">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
+          <div className="relative max-w-sm w-full shrink-0">
+            <input type="search" placeholder="Mahsulotlarni qidirish" className="rounded-lg border bg-gray-50 max-w-full w-full focus:outline-none p-3 pl-12" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 text-gray-500 absolute top-1/2 -translate-y-1/2 left-3">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+
+            <div className='absolute w-full rounded-lg bg-white z-10 -bottom-36 py-4 p-5' style={{ boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 48px 0px' }}>
+              <div className='flex items-center justify-between'>
+                <h2 className='font-bold'>
+                  1 Natija topildi
+                </h2>
+                <a href="" className='text-indigo-500 text-sm'>
+                  Barchasini ko'rish
+                </a>
+              </div>
+
+              <div className='pt-4'>
+                <a href='#' className='flex items-center gap-4'>
+                  <div className='rounded-lg w-12 h-12 relative overflow-hidden'>
+                    <Image fill alt='rahbar' src="/rahbar.webp" className="w-full h-full object-cover" />
+                  </div>
+
+                  <span className='text-xs'>
+                    985
+                  </span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
