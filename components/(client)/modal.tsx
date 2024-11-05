@@ -41,7 +41,7 @@ const SubmitModal = ({setOpen}: props) => {
             />
           </div>
         </div>
-        <div>
+        <div> 
           <label htmlFor="last-name" className="block text-sm font-medium text-gray-900">
             Sharif
           </label>
