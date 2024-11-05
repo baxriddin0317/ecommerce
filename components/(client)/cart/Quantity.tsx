@@ -1,11 +1,12 @@
 import useCartProductStore from "@/zustand/useCartStore";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { HiMinus } from "react-icons/hi";
 import { LuPlus } from "react-icons/lu";
 
 const Quantity = ({id}: {id:string}) => {
-  const { incrementQuantity, decrementQuantity, getItemQuantity } = useCartProductStore();
-
+  const { cartProducts, incrementQuantity, decrementQuantity, getItemQuantity } = useCartProductStore();
+  
   const quantityInBasket = getItemQuantity(id);
 
   const handleAddQuantity = () => {
@@ -15,11 +16,13 @@ const Quantity = ({id}: {id:string}) => {
   const handleDeleteQuantity = () => {
     decrementQuantity(id);
   };
+
+
   return (
     <div className="ml-auto rounded-xl border border-gray-300 flex items-center gap-8 w-fit py-1.5 px-2">
       <button
         onClick={handleDeleteQuantity}
-        disabled={quantityInBasket == 1}
+        disabled={quantityInBasket == 0}
         className="size-9 bg-gray-100 flex items-center justify-center rounded-full"
       >
         <HiMinus className="text-black" />

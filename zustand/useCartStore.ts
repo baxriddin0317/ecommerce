@@ -9,7 +9,9 @@ interface BasketState {
   addToBasket: (product: ProductT) => void;
   incrementQuantity: (id: string) => void;
   decrementQuantity: (id: string) => void;
-  getItemQuantity: (id: string) => number;
+  getItemQuantity: (id: string) => number;  
+  getTotalQuantity: () => number;
+  getTotalPrice: () => number; 
 }
 
 const useCartProductStore = create<BasketState>()(
@@ -17,7 +19,7 @@ const useCartProductStore = create<BasketState>()(
     (set, get) => ({
       cartProducts: [],
       cartProduct: null,
-      load: false,
+      load: false, 
       
       addToBasket: (product) => {
         set((state) => {
@@ -44,16 +46,40 @@ const useCartProductStore = create<BasketState>()(
       },
       
       decrementQuantity: (id) => {
-        set((state) => ({
-          cartProducts: state.cartProducts.map((item) =>
-            item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-          ),
-        }));
+        // set((state) => ({
+        //   cartProducts: state.cartProducts.map((item) =>
+        //     item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+        //   ),
+          
+        // }));
+        set((state) => {
+          const item = state.cartProducts.find((item) => item.id === id);
+          if (!item) return state;
+
+          // If quantity is 1, remove the item from the basket
+          if (item.quantity === 1) {
+            return { cartProducts: state.cartProducts.filter((item) => item.id !== id) };
+          }
+
+          // Otherwise, decrease the quantity
+          const newBasket = state.cartProducts.map((item) =>
+            item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+          );
+          return { cartProducts: newBasket };
+        });
       },
       
       getItemQuantity: (id) => {
         const item = get().cartProducts.find((item) => item.id === id);
         return item ? item.quantity : 1;
+      },
+
+      getTotalQuantity: () => {
+        return get().cartProducts.reduce((acc, curr) => acc + curr.quantity, 0);
+      },
+
+      getTotalPrice: () => {
+        return get().cartProducts.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
       },
     }),
     {
