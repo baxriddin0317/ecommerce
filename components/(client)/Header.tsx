@@ -28,15 +28,12 @@ const Header = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 text-gray-500 absolute top-1/2 -translate-y-1/2 left-3">
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-
+            {/* modal */}
             <div className='absolute w-full rounded-lg bg-white z-10 -bottom-36 py-4 p-5' style={{ boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 48px 0px' }}>
               <div className='flex items-center justify-between'>
                 <h2 className='font-bold'>
                   1 Natija topildi
                 </h2>
-                <a href="" className='text-indigo-500 text-sm'>
-                  Barchasini ko'rish
-                </a>
               </div>
 
               <div className='pt-4'>

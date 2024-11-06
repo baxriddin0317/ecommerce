@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Quantity from "../(client)/cart/Quantity";
 import { BsCartDash } from "react-icons/bs";
 import SubmitModal from "../(client)/Modal";
+import Image from "next/image";
 
 const CartProductContent = () => {
   const [open, setOpen] = useState(false);
@@ -15,9 +16,10 @@ const CartProductContent = () => {
         {cartProducts.map((cart) => (
           <div key={cart.id} className="flex flex-wrap items-center">
             <div className="relative size-44 overflow-hidden rounded-md">
-              <img
+              <Image
+                fill
                 className="absolute size-full object-cover"
-                src={cart.productImageUrl}
+                src={cart.productImageUrl[0].url}
                 alt=""
               />
             </div>

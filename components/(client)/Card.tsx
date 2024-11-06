@@ -1,9 +1,10 @@
+import { ImageT } from '@/lib/types';
 import Image from 'next/image'
 import React from 'react'
 
 interface props {
   title: string;
-  imgUrl: string;
+  imgUrl: ImageT[];
   price: number;
   href: string;
 }
@@ -13,7 +14,7 @@ const Card = ({title, imgUrl, price, href}: props) => {
     <>
       <a href={href} className="rounded-lg w-fit shadow">
         <div className="w-52 h-48 relative rounded-xl overflow-hidden p-0.5">
-          <img className='absolute size-full object-cover' src={imgUrl ? imgUrl : `/sample.webp`} alt='' />
+          <Image fill className='absolute size-full object-cover' src={imgUrl[0].url ? imgUrl[0].url : `/sample.webp`} alt='' />
         </div>
         <div className="space-y-2 py-2 px-1.5">
           <span className="text-xs">

@@ -1,19 +1,41 @@
 "use client"
 import Loader from '@/components/Loader'
+import { fireStorage } from '@/firebase/FirebaseConfig';
 import useCategoryStore from '@/zustand/useCategoryStore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 
 const AddCategory = () => {
   const { addCategory, loading } = useCategoryStore();
+  const [load, setLoad] = useState(false);
    // navigate
   const navigate = useRouter();
   const [newCategory, setNewCategory] = useState({
     id: "",
     name: "",
-    categoryImgUrl: "",
+    categoryImgUrl: [] as string[],
   });
+
+  const handleImageUpload = async (files: FileList | null) => {
+    if (!files) return;
+    setLoad(true);
+
+    const uploadPromises = Array.from(files).map(async (file) => {
+      const storageRef = ref(fireStorage, `categories/${file.name}`);
+      await uploadBytes(storageRef, file);
+      return await getDownloadURL(storageRef);
+    });
+    
+    const imageUrls = await Promise.all(uploadPromises);
+    console.log(imageUrls);
+    setNewCategory((prevProduct) => ({
+      ...prevProduct,
+      categoryImgUrl: imageUrls,
+    }));
+    setLoad(false);
+  };
 
   const handleAddCategory = async () => {
     
@@ -51,10 +73,11 @@ const AddCategory = () => {
           {/* Input Three  */}
           <div className="mb-3">
             <input
-              type="text"
+              type="file"
+              multiple
               name="productImageUrl"
-              value={newCategory.categoryImgUrl}
-              onChange={(e) => setNewCategory({ ...newCategory, categoryImgUrl: e.target.value })}
+              accept="image/*"
+              onChange={(e) => handleImageUpload(e.target.files)}
               placeholder="Category Image Url"
               className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
             />

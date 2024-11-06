@@ -32,7 +32,6 @@ const userLoginFunction = async () => {
     setLoading(true);
     try {
         const users = await signInWithEmailAndPassword(auth, userLogin.email, userLogin.password);
-        console.log(users.user)
 
         try {
             const q = query(
@@ -48,17 +47,20 @@ const userLoginFunction = async () => {
                     password: ""
                 })
                 toast.success("Login Successfully");
-                setLoading(false);
+                console.log(user)
+
                 if(user.role === "user") {
-                    navigate.push('/user-dashboard');
+                    navigate.push('/');
                 }else{
                     navigate.push('/admin-dashboard');
                 }
+                setLoading(false);
             });
             return () => data;
         } catch (error) {
             console.log(error);
             setLoading(false);
+            toast.error("Login Failed");
         }
     } catch (error) {
         console.log(error);
@@ -118,7 +120,7 @@ return (
                 </button>
             </div>
             <div>
-                <h2 className='text-black'>Don't Have an account <Link className=' text-pink-500 font-bold' href={'/signup'}>Signup</Link></h2>
+                <h2 className='text-black'>Don't Have an account <Link className=' text-pink-500 font-bold' href={'/sign-up'}>Signup</Link></h2>
             </div>
         </div>
     </div>

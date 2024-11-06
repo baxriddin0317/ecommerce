@@ -1,8 +1,10 @@
 "use client"
 import Loader from "@/components/Loader";
-import { ProductT } from "@/lib/types";
+import { fireStorage } from "@/firebase/FirebaseConfig";
+import { ImageT, ProductT } from "@/lib/types";
 import useCategoryStore from "@/zustand/useCategoryStore";
 import useProductStore from "@/zustand/useProductStore";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -16,7 +18,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
     id: params.id || '',
     title: '',
     price: 0,
-    productImageUrl: '',
+    productImageUrl: [] as ImageT[],
     category: '',
     description: '',
     quantity: 0,
@@ -48,6 +50,44 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
       });
     }
   }, [product]);
+
+  const handleImageUpload = async (files: FileList | null) => {
+    if (!files) return;
+    
+    const uploadPromises = Array.from(files).map(async (file) => {
+      console.log(file.name);
+      const storageRef = ref(fireStorage, `products/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadUrl = await getDownloadURL(storageRef);
+      return { url: downloadUrl, path: storageRef.fullPath };
+    });
+
+    const imageUrls = await Promise.all(uploadPromises);
+    setUpdatedProduct((prevProduct) => ({
+      ...prevProduct,
+      productImageUrl: [...prevProduct.productImageUrl, ...imageUrls],
+    }));
+  };
+
+  const handleDeleteImage = async (imageUrl: string) => {
+    // Remove the image URL from the state
+    setUpdatedProduct((prevProduct) => ({
+      ...prevProduct,
+      productImageUrl: prevProduct.productImageUrl.filter((url) => url.path !== imageUrl),
+    }));
+
+    // Optionally delete the image from Firebase Storage
+    console.log(imageUrl);
+    
+    const imageRef = ref(fireStorage, `products/${imageUrl.split('/').pop()}`);
+    try {
+      await deleteObject(imageRef);
+      toast.success("Image deleted successfully");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      toast.error("Failed to delete image");
+    }
+  };
 
   const handleUpdate = async () => {
     if (params.id) {
@@ -95,14 +135,29 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
               className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
             />
           </div>
-          {/* Input Three  */}
+          {/* Display uploaded images with delete option */}
+          <div className="mb-3 flex flex-wrap gap-2">
+            {updatedProduct.productImageUrl.map((img, index) => (
+              <div key={index} className="relative w-20 h-20">
+                <img src={img.url} alt={`Product Image ${index + 1}`} className="w-full h-full rounded-md object-cover" />
+                <button
+                  onClick={() => handleDeleteImage(img.path)}
+                  className="absolute size-5 top-0 right-0 bg-red-500 text-white rounded-full p-1 text-[8px]"
+                  title="Delete Image"
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+          {/* Input img  */}
           <div className="mb-3">
             <input
-              type="text"
               name="productImageUrl"
-              placeholder="Product Image Url"
-              value={updatedProduct?.productImageUrl}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, productImageUrl: e.target.value })}
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => handleImageUpload(e.target.files)}
               className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
             />
           </div>

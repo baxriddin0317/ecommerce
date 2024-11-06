@@ -8,6 +8,7 @@ import useCartProductStore from "@/zustand/useCartStore";
 import { BsCartDash } from "react-icons/bs";
 import { LuPlus } from "react-icons/lu";
 import { HiMinus } from "react-icons/hi";
+import Image from "next/image";
 
 const ProductItem = ({ id }: { id: string }) => {
   const { fetchSingleProduct, loading, product } = useProductStore();
@@ -50,8 +51,8 @@ const ProductItem = ({ id }: { id: string }) => {
 
   return (
     <div className="flex gap-10 py-5">
-      <div className="rounded-xl overflow-hidden max-w-[416px] w-full h-[512px]">
-        <img src={product.productImageUrl} alt="" className="w-full h-full object-cover" />
+      <div className="relative rounded-xl overflow-hidden w-full h-[512px]">
+        <Image fill src={product.productImageUrl[0].url} alt="" className="w-full h-full object-contain" />
       </div>
       <div className="space-y-9 w-full">
         <h1 className="text-xl">{product?.title}</h1>

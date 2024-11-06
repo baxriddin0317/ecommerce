@@ -2,7 +2,7 @@ export interface ProductT {
   id: string;
   title: string;
   price: number;
-  productImageUrl: string;
+  productImageUrl: ImageT[];
   category: string;
   description: string;
   quantity: number;
@@ -13,5 +13,10 @@ export interface ProductT {
 export interface CategoryI {
   id: string;
   name: string;
-  categoryImgUrl: string;
+  categoryImgUrl: string[];
+}
+
+export interface ImageT {
+  url: string;
+  path: string;
 }

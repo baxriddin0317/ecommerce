@@ -6,6 +6,7 @@ import { MdDeleteForever } from "react-icons/md";
 import Loader from "../Loader";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 const CategoryDetail = () => {
   const {categories, fetchCategories, loading, deleteCategory} = useCategoryStore();
@@ -57,7 +58,7 @@ const CategoryDetail = () => {
                             </td>
                             <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
                                 <div className="flex justify-center py-1">
-                                    <img className="w-20 " src={item.categoryImgUrl} alt="" />
+                                    <Image className="w-20 " width={80} height={80} src={item.categoryImgUrl[0]} alt="" />
                                 </div>
                             </td>
                             <td className="h-12 px-6 transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500">

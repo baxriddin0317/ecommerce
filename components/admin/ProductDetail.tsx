@@ -101,7 +101,7 @@ const ProductDetail = () => {
                   </td>
                   <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
                     <div className="flex justify-center">
-                      <img className="w-20" src={productImageUrl} alt="" />
+                      <img className="w-20" src={productImageUrl[0].url} alt="" />
                     </div>
                   </td>
                   <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">

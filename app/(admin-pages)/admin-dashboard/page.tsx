@@ -5,12 +5,15 @@ import Loader from "@/components/Loader";
 import useCategoryStore from "@/zustand/useCategoryStore";
 import useProductStore from "@/zustand/useProductStore";
 import { Popover, PopoverButton, PopoverPanel, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Admin = () => {
   const [user, setUser] = useState<any>(null);
   const { products, fetchProducts } = useProductStore();
-  const { categories, fetchCategories } = useCategoryStore()
+  const { categories, fetchCategories } = useCategoryStore();
+
+  const router = useRouter()
 
   useEffect(() => {
     fetchProducts();
@@ -23,6 +26,12 @@ const Admin = () => {
       setUser(userString ? JSON.parse(userString) : null);
     }
   }, []);
+
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      router.push('/');
+    }
+  }, [user]);
   
   if(!user){
     return <div className="flex items-center justify-center h-screen w-screen">

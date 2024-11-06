@@ -1,7 +1,5 @@
 "use client"
-import Category from '@/app/(client-pages)/category/page'
 import useCategoryStore from '@/zustand/useCategoryStore'
-import Image from 'next/image'
 import React, { useEffect } from 'react'
 import Loader from '../Loader'
 

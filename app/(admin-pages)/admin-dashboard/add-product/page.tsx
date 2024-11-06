@@ -1,8 +1,10 @@
 "use client";
 import Loader from "@/components/Loader";
-import { fireDB } from "@/firebase/FirebaseConfig";
+import { fireDB, fireStorage } from "@/firebase/FirebaseConfig";
+import { ImageT } from "@/lib/types";
 import useCategoryStore from "@/zustand/useCategoryStore";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -22,7 +24,7 @@ const AddProductPage = () => {
   const [product, setProduct] = useState({
     title: "",
     price: "",
-    productImageUrl: "",
+    productImageUrl: [] as ImageT[],
     category: "",
     description: "",
     quantity: 0,
@@ -34,12 +36,31 @@ const AddProductPage = () => {
     }),
   });
 
+  const handleImageUpload = async (files: FileList | null) => {
+    if (!files) return;
+    setLoading(true);
+
+    const uploadPromises = Array.from(files).map(async (file) => {
+      const storageRef = ref(fireStorage, `products/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadUrl = await getDownloadURL(storageRef);
+      return { url: downloadUrl, path: storageRef.fullPath };
+    });
+
+    const imageUrls = await Promise.all(uploadPromises);
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      productImageUrl: [...prevProduct.productImageUrl, ...imageUrls],
+    }));
+    setLoading(false);
+  };
+
   // Add Product Function
   const addProductFunction = async () => {
     if (
       product.title == "" ||
       product.price == "" ||
-      product.productImageUrl == "" ||
+      product.productImageUrl.length == 0 ||
       product.category == "" ||
       product.description == ""
     ) {
@@ -106,15 +127,10 @@ const AddProductPage = () => {
           {/* Input img  */}
           <div className="mb-3">
             <input
-              type="text"
+              type="file"
+              multiple
               name="productImageUrl"
-              value={product.productImageUrl}
-              onChange={(e) => {
-                setProduct({
-                  ...product,
-                  productImageUrl: e.target.value,
-                });
-              }}
+              onChange={(e) => handleImageUpload(e.target.files)}
               placeholder="Product Image Url"
               accept="image/*"
               className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
