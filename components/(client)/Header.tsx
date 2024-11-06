@@ -2,13 +2,57 @@
 import useCartProductStore from '@/zustand/useCartStore'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BsFillCartCheckFill } from 'react-icons/bs'
 
 const Header = () => {
-  const { cartProducts } = useCartProductStore()
+  const [inputValue, setInputValue] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { cartProducts } = useCartProductStore();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   // navigate
   const navigate = useRouter();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+
+    if (value.length >= 2) {
+      setIsModalVisible(true);
+    } else {
+      setIsModalVisible(false);
+    }
+  };
+
+  const handleFocus = () => {
+    if (inputValue.length >= 2) {
+      setIsModalVisible(true);
+    } 
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      if (!inputRef.current || !inputRef.current.contains(document.activeElement)) {
+        setIsModalVisible(false);
+      }
+    }, 2000);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node) &&
+          inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        setIsModalVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleNavigate = () => {
     if(cartProducts.length > 0){
@@ -24,12 +68,21 @@ const Header = () => {
             <Image fill alt='logo' src="/logo.png" className="w-full h-full" />
           </div>
           <div className="relative max-w-sm w-full shrink-0">
-            <input type="search" placeholder="Mahsulotlarni qidirish" className="rounded-lg border bg-gray-50 max-w-full w-full focus:outline-none p-3 pl-12" />
+            <input 
+              type="search" 
+              onFocus={handleFocus}
+              value={inputValue}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              ref={inputRef}
+              placeholder="Mahsulotlarni qidirish" 
+              className="rounded-lg border bg-gray-50 max-w-full w-full focus:outline-none p-3 pl-12" 
+            />
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 text-gray-500 absolute top-1/2 -translate-y-1/2 left-3">
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
             {/* modal */}
-            <div className='absolute w-full rounded-lg bg-white z-10 -bottom-36 py-4 p-5' style={{ boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 48px 0px' }}>
+            {isModalVisible && <div  ref={modalRef} className='absolute w-full rounded-lg bg-white z-10 -bottom-36 py-4 p-5' style={{ boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 48px 0px' }}>
               <div className='flex items-center justify-between'>
                 <h2 className='font-bold'>
                   1 Natija topildi
@@ -47,7 +100,7 @@ const Header = () => {
                   </span>
                 </a>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
         <div className='flex items-center gap-4'>
