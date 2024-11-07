@@ -5,6 +5,9 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import useProductStore from "@/zustand/useProductStore";
 import toast from "react-hot-toast";
+import { ProductT } from "@/lib/types";
+import { deleteObject, listAll, ref } from "firebase/storage";
+import { fireStorage } from "@/firebase/FirebaseConfig";
 
 const ProductDetail = () => {
     const { products, loading, fetchProducts, deleteProduct } = useProductStore();
@@ -13,9 +16,17 @@ const ProductDetail = () => {
       fetchProducts();
     }, [fetchProducts]);
 
-    const handleDelete = async (id: string) => {
-      if (id) {
-        await deleteProduct(id);
+    const handleDelete = async (item: ProductT) => {
+      if (item.id) {
+        const imageFolderRef = ref(fireStorage, `products/${item.storageFileId}`);
+        const imageRefs = await listAll(imageFolderRef);
+        
+        const deleteImagePromises = imageRefs.items.map(async (itemRef) => {
+          await deleteObject(itemRef);
+        });
+        await Promise.all(deleteImagePromises);
+
+        await deleteProduct(item.id);
         toast.success('Product Deleted Successfully');
       }
     };
@@ -120,7 +131,7 @@ const ProductDetail = () => {
                     <Link href={`/admin-dashboard/update-product/${id}`}><CiEdit className="text-green-500 text-2xl mx-auto cursor-pointer" /></Link>
                   </td>
                   <td className="h-12 px-6 transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500">
-                    <button onClick={() => handleDelete(id)}>
+                    <button onClick={() => handleDelete(item)}>
                       <MdDeleteForever className="text-red-500 text-2xl mx-auto cursor-pointer" />
                     </button>
                   </td>

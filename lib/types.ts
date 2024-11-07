@@ -8,6 +8,7 @@ export interface ProductT {
   quantity: number;
   time: any; // Adjust based on your timestamp type
   date: any; // Adjust based on your date type
+  storageFileId: string;
 }
 
 export interface CategoryI {

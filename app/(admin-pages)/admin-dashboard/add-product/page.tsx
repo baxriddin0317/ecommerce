@@ -8,6 +8,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { v4 as uuidv4 } from 'uuid';
 
 const AddProductPage = () => {
   const [loading, setLoading] = useState(false);
@@ -34,14 +35,16 @@ const AddProductPage = () => {
       day: "2-digit",
       year: "numeric",
     }),
+    storageFileId: ""
   });
 
   const handleImageUpload = async (files: FileList | null) => {
     if (!files) return;
     setLoading(true);
 
+    const uuid = uuidv4();
     const uploadPromises = Array.from(files).map(async (file) => {
-      const storageRef = ref(fireStorage, `products/${file.name}`);
+      const storageRef = product.storageFileId.length === 0 ? ref(fireStorage, `products/${uuid}/${file.name}`) : ref(fireStorage, `products/${product.storageFileId}/${file.name}`);
       await uploadBytes(storageRef, file);
       const downloadUrl = await getDownloadURL(storageRef);
       return { url: downloadUrl, path: storageRef.fullPath };
@@ -51,6 +54,7 @@ const AddProductPage = () => {
     setProduct((prevProduct) => ({
       ...prevProduct,
       productImageUrl: [...prevProduct.productImageUrl, ...imageUrls],
+      storageFileId: uuid
     }));
     setLoading(false);
   };
@@ -69,7 +73,6 @@ const AddProductPage = () => {
 
     setLoading(true);
     try {
-
       const productRef = collection(fireDB, "products");
       await addDoc(productRef, product);
       toast.success("Add product successfully");

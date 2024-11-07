@@ -24,7 +24,9 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
     quantity: 0,
     time: product?.time || '',
     date: product?.date || '',
+    storageFileId: ''
   });
+
   useEffect(() => {
     if (params.id) {
       fetchSingleProduct(params.id as string);
@@ -47,6 +49,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
         quantity: product.quantity,
         time: product.time,
         date: product.date,
+        storageFileId: product.storageFileId
       });
     }
   }, [product]);
@@ -55,8 +58,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
     if (!files) return;
     
     const uploadPromises = Array.from(files).map(async (file) => {
-      console.log(file.name);
-      const storageRef = ref(fireStorage, `products/${file.name}`);
+      const storageRef = ref(fireStorage, `products/${updatedProduct.storageFileId}/${file.name}`);
       await uploadBytes(storageRef, file);
       const downloadUrl = await getDownloadURL(storageRef);
       return { url: downloadUrl, path: storageRef.fullPath };
@@ -69,17 +71,15 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
     }));
   };
 
+  console.log(product);
   const handleDeleteImage = async (imageUrl: string) => {
     // Remove the image URL from the state
     setUpdatedProduct((prevProduct) => ({
       ...prevProduct,
       productImageUrl: prevProduct.productImageUrl.filter((url) => url.path !== imageUrl),
     }));
-
-    // Optionally delete the image from Firebase Storage
-    console.log(imageUrl);
     
-    const imageRef = ref(fireStorage, `products/${imageUrl.split('/').pop()}`);
+    const imageRef = ref(fireStorage, `products/${updatedProduct.storageFileId}/${imageUrl.split('/').pop()}`);
     try {
       await deleteObject(imageRef);
       toast.success("Image deleted successfully");
