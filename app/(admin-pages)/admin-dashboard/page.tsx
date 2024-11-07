@@ -52,36 +52,36 @@ const Admin = () => {
       {/* Top */}
       <div className="mb-5 px-5 mt-5">
         <div className="flex items-center justify-between bg-pink-50 px-5 py-2 border border-pink-100 rounded-lg">
-          <div className="flex items-end gap-4">
-            <h1 className="text-2xl font-bold text-pink-500">
-              Admin Dashboard
-            </h1>
+          <h1 className="text-2xl font-bold text-pink-500">
+            Admin Dashboard
+          </h1>
+          <div className="flex items-center gap-4">
             <Link className="font-medium text-pink-500 hover:text-pink-700" href={'/admin-dashboard/orders'}>
               Orders
             </Link>
+            {/* image  */}
+            <Popover className="relative lg:ml-5">
+              <PopoverButton className="flex items-center outline-none">
+                <img
+                  className="size-14"
+                  src="https://cdn-icons-png.flaticon.com/128/2202/2202112.png"
+                  alt=""
+                />
+              </PopoverButton>
+              <PopoverPanel  
+                // transition
+                anchor="bottom"
+                className="divide-y w-52 bg-black -translate-x-5 divide-white/5 rounded-xl text-sm/6 [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 p-2"
+              >
+                <div className="block rounded-lg py-2 px-3">
+                  <p className="font-semibold text-white">{user.name}</p>
+                </div>
+                <div className="block rounded-lg py-2 px-3 transition hover:bg-white/20 cursor-pointer">
+                  <button className="font-semibold text-white">Log out</button>
+                </div>
+              </PopoverPanel>
+            </Popover>
           </div>
-          {/* image  */}
-          <Popover className="relative">
-            <PopoverButton className="flex items-center outline-none">
-              <img
-                className="size-14"
-                src="https://cdn-icons-png.flaticon.com/128/2202/2202112.png"
-                alt=""
-              />
-            </PopoverButton>
-            <PopoverPanel  
-              // transition
-              anchor="bottom"
-              className="divide-y w-52 bg-black -translate-x-5 divide-white/5 rounded-xl text-sm/6 [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 p-2"
-            >
-              <div className="block rounded-lg py-2 px-3">
-                <p className="font-semibold text-white">{user.name}</p>
-              </div>
-              <div className="block rounded-lg py-2 px-3 transition hover:bg-white/20 cursor-pointer">
-                <button className="font-semibold text-white">Log out</button>
-              </div>
-            </PopoverPanel>
-          </Popover>
         </div>
       </div>
       <TabGroup className="px-5">

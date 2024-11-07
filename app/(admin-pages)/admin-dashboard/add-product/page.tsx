@@ -86,112 +86,110 @@ const AddProductPage = () => {
   };
 
   return (
-    <div>
-      <div className="flex justify-center items-center h-screen">
-        {loading && <Loader />}
-        {/* Login Form  */}
-        <div className="login_Form bg-pink-50 px-8 py-6 border border-pink-100 rounded-xl shadow-md">
-          {/* Top Heading  */}
-          <div className="mb-5">
-            <h2 className="text-center text-2xl font-bold text-pink-500 "></h2>
-          </div>
-          {/* Input title  */}
-          <div className="mb-3">
-            <input
-              type="text"
-              name="title"
-              value={product.title}
-              onChange={(e) => {
-                setProduct({
-                  ...product,
-                  title: e.target.value,
-                });
-              }}
-              placeholder="Product Title"
-              className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
-            />
-          </div>
-          {/* Input price  */}
-          <div className="mb-3">
-            <input
-              type="number"
-              name="price"
-              value={product.price}
-              onChange={(e) => {
-                setProduct({
-                  ...product,
-                  price: e.target.value,
-                });
-              }}
-              placeholder="Product Price"
-              className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
-            />
-          </div>
-          {/* Input img  */}
-          <div className="mb-3">
-            <input
-              type="file"
-              multiple
-              name="productImageUrl"
-              onChange={(e) => handleImageUpload(e.target.files)}
-              placeholder="Product Image Url"
-              accept="image/*"
-              className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
-            />
-          </div>
-          {/* Input category  */}
-          <div className="mb-3">
-            <select
-              value={product.category}
-              onChange={(e) => {
-                setProduct({
-                  ...product,
-                  category: e.target.value,
-                });
-              }}
-              className="w-full px-1 py-2 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none  "
-            >
-              <option >Select Product Category</option>
-              {categories.map((value) => {
-                const { name, id } = value;
-                return (
-                  <option
-                    className=" first-letter:uppercase"
-                    key={id}
-                    value={name}
-                  >
-                    {name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          {/* Input description  */}
-          <div className="mb-3">
-            <textarea
-              value={product.description}
-              onChange={(e) => {
-                setProduct({
-                  ...product,
-                  description: e.target.value,
-                });
-              }}
-              name="description"
-              placeholder="Product Description"
-              rows={5}
-              className=" w-full px-2 py-1 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none placeholder-pink-300 "
-            ></textarea>
-          </div>
-          {/* Add Product Button  */}
-          <div className="mb-3">
-            <button
-              onClick={addProductFunction}
-              type="button"
-              className="bg-pink-500 hover:bg-pink-600 w-full text-white text-center py-2 font-bold rounded-md "
-            >
-              Add product
-            </button>
-          </div>
+    <div className="flex justify-center items-center h-screen">
+      {loading && <Loader />}
+      {/* Login Form  */}
+      <div className="login_Form bg-pink-50 px-8 py-6 border border-pink-100 rounded-xl shadow-md">
+        {/* Top Heading  */}
+        <div className="mb-5">
+          <h2 className="text-center text-2xl font-bold text-pink-500 "></h2>
+        </div>
+        {/* Input title  */}
+        <div className="mb-3">
+          <input
+            type="text"
+            name="title"
+            value={product.title}
+            onChange={(e) => {
+              setProduct({
+                ...product,
+                title: e.target.value,
+              });
+            }}
+            placeholder="Product Title"
+            className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
+          />
+        </div>
+        {/* Input price  */}
+        <div className="mb-3">
+          <input
+            type="number"
+            name="price"
+            value={product.price}
+            onChange={(e) => {
+              setProduct({
+                ...product,
+                price: e.target.value,
+              });
+            }}
+            placeholder="Product Price"
+            className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
+          />
+        </div>
+        {/* Input img  */}
+        <div className="mb-3">
+          <input
+            type="file"
+            multiple
+            name="productImageUrl"
+            onChange={(e) => handleImageUpload(e.target.files)}
+            placeholder="Product Image Url"
+            accept="image/*"
+            className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
+          />
+        </div>
+        {/* Input category  */}
+        <div className="mb-3">
+          <select
+            value={product.category}
+            onChange={(e) => {
+              setProduct({
+                ...product,
+                category: e.target.value,
+              });
+            }}
+            className="w-full px-1 py-2 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none  "
+          >
+            <option >Select Product Category</option>
+            {categories.map((value) => {
+              const { name, id } = value;
+              return (
+                <option
+                  className=" first-letter:uppercase"
+                  key={id}
+                  value={name}
+                >
+                  {name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        {/* Input description  */}
+        <div className="mb-3">
+          <textarea
+            value={product.description}
+            onChange={(e) => {
+              setProduct({
+                ...product,
+                description: e.target.value,
+              });
+            }}
+            name="description"
+            placeholder="Product Description"
+            rows={5}
+            className=" w-full px-2 py-1 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none placeholder-pink-300 "
+          ></textarea>
+        </div>
+        {/* Add Product Button  */}
+        <div className="mb-3">
+          <button
+            onClick={addProductFunction}
+            type="button"
+            className="bg-pink-500 hover:bg-pink-600 w-full text-white text-center py-2 font-bold rounded-md "
+          >
+            Add product
+          </button>
         </div>
       </div>
     </div>

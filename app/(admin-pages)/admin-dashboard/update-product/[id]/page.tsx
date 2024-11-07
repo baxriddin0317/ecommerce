@@ -102,108 +102,106 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div>
-      <div className="flex justify-center items-center h-screen">
-      
-        {/* Login Form  */}
-        <div className="login_Form bg-pink-50 px-8 py-6 border border-pink-100 rounded-xl shadow-md">
-          {/* Top Heading  */}
-          <div className="mb-5">
-            <h2 className="text-center text-2xl font-bold text-pink-500 ">
-              update product
-            </h2>
-          </div>
-          {/* Input One  */}
-          <div className="mb-3">
-            <input
-              type="text"
-              name="title"
-              placeholder="Product Title"
-              value={updatedProduct.title}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, title: e.target.value })}
-              className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
-            />
-          </div>
-          {/* Input Two  */}
-          <div className="mb-3">
-            <input
-              type="number"
-              name="price"
-              placeholder="Product Price"
-              value={updatedProduct?.price}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, price: +e.target.value })}
-              className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
-            />
-          </div>
-          {/* Display uploaded images with delete option */}
-          <div className="mb-3 flex flex-wrap gap-2">
-            {updatedProduct.productImageUrl.map((img, index) => (
-              <div key={index} className="relative w-20 h-20">
-                <img src={img.url} alt={`Product Image ${index + 1}`} className="w-full h-full rounded-md object-cover" />
-                <button
-                  onClick={() => handleDeleteImage(img.path)}
-                  className="absolute size-5 top-0 right-0 bg-red-500 text-white rounded-full p-1 text-[8px]"
-                  title="Delete Image"
+    <div className="flex justify-center items-center h-screen">
+    
+      {/* Login Form  */}
+      <div className="login_Form bg-pink-50 px-8 py-6 border border-pink-100 rounded-xl shadow-md">
+        {/* Top Heading  */}
+        <div className="mb-5">
+          <h2 className="text-center text-2xl font-bold text-pink-500 ">
+            update product
+          </h2>
+        </div>
+        {/* Input One  */}
+        <div className="mb-3">
+          <input
+            type="text"
+            name="title"
+            placeholder="Product Title"
+            value={updatedProduct.title}
+            onChange={(e) => setUpdatedProduct({ ...updatedProduct, title: e.target.value })}
+            className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
+          />
+        </div>
+        {/* Input Two  */}
+        <div className="mb-3">
+          <input
+            type="number"
+            name="price"
+            placeholder="Product Price"
+            value={updatedProduct?.price}
+            onChange={(e) => setUpdatedProduct({ ...updatedProduct, price: +e.target.value })}
+            className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
+          />
+        </div>
+        {/* Display uploaded images with delete option */}
+        <div className="mb-3 flex flex-wrap gap-2">
+          {updatedProduct.productImageUrl.map((img, index) => (
+            <div key={index} className="relative w-20 h-20">
+              <img src={img.url} alt={`Product Image ${index + 1}`} className="w-full h-full rounded-md object-cover" />
+              <button
+                onClick={() => handleDeleteImage(img.path)}
+                className="absolute size-5 top-0 right-0 bg-red-500 text-white rounded-full p-1 text-[8px]"
+                title="Delete Image"
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+        {/* Input img  */}
+        <div className="mb-3">
+          <input
+            name="productImageUrl"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={(e) => handleImageUpload(e.target.files)}
+            className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
+          />
+        </div>
+        {/* Input Four  */}
+        <div className="mb-3">
+          <select 
+            className="w-full px-1 py-2 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none"
+            value={updatedProduct.category}
+            onChange={(e) => setUpdatedProduct({ ...updatedProduct, category: e.target.value })}
+          >
+            <option disabled>Select Product Category</option>
+            {categories.map((value) => {
+              const { name, id } = value;
+              return (
+                <option
+                  className=" first-letter:uppercase"
+                  key={id}
+                  value={name}
                 >
-                  X
-                </button>
-              </div>
-            ))}
-          </div>
-          {/* Input img  */}
-          <div className="mb-3">
-            <input
-              name="productImageUrl"
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={(e) => handleImageUpload(e.target.files)}
-              className="bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300"
-            />
-          </div>
-          {/* Input Four  */}
-          <div className="mb-3">
-            <select 
-              className="w-full px-1 py-2 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none"
-              value={updatedProduct.category}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, category: e.target.value })}
-            >
-              <option disabled>Select Product Category</option>
-              {categories.map((value) => {
-                const { name, id } = value;
-                return (
-                  <option
-                    className=" first-letter:uppercase"
-                    key={id}
-                    value={name}
-                  >
-                    {name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          {/* Input Five  */}
-          <div className="mb-3">
-            <textarea
-              name="description"
-              placeholder="Product Description"
-              rows={5}
-              value={updatedProduct?.description}
-              onChange={(e) => setUpdatedProduct({ ...updatedProduct, description: e.target.value })}
-              className=" w-full px-2 py-1 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none placeholder-pink-300 "
-            ></textarea>
-          </div>
-          {/* Update Product Button  */}
-          <div className="mb-3">
-            <button
-              type="button"
-              onClick={handleUpdate}
-              className="bg-pink-500 hover:bg-pink-600 w-full text-white text-center py-2 font-bold rounded-md capitalize"
-            >
-              update product
-            </button>
-          </div>
+                  {name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        {/* Input Five  */}
+        <div className="mb-3">
+          <textarea
+            name="description"
+            placeholder="Product Description"
+            rows={5}
+            value={updatedProduct?.description}
+            onChange={(e) => setUpdatedProduct({ ...updatedProduct, description: e.target.value })}
+            className=" w-full px-2 py-1 text-pink-300 bg-pink-50 border border-pink-200 rounded-md outline-none placeholder-pink-300 "
+          ></textarea>
+        </div>
+        {/* Update Product Button  */}
+        <div className="mb-3">
+          <button
+            type="button"
+            onClick={handleUpdate}
+            className="bg-pink-500 hover:bg-pink-600 w-full text-white text-center py-2 font-bold rounded-md capitalize"
+          >
+            update product
+          </button>
         </div>
       </div>
     </div>

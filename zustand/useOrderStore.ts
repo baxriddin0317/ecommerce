@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import { collection, getDocs, getDoc, doc, addDoc } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, addDoc, query, onSnapshot } from "firebase/firestore";
 import { fireDB } from "@/firebase/FirebaseConfig";
 import { Order, ProductT } from "@/lib/types";
 
@@ -8,7 +8,7 @@ interface StoreState {
   currentOrder: Order | null;
   loadingOrders: boolean;
   addOrder: (order: Order) => Promise<void>;
-  // fetchAllOrders: () => Promise<void>;
+  fetchAllOrders: () => void;
   // fetchSingleOrder: (orderId: string) => Promise<void>;
 }
 
@@ -35,20 +35,23 @@ export const useOrderStore = create<StoreState>((set) => ({
   },
 
   // Fetch all orders from Firestore and update the state
-  // fetchAllOrders: async () => {
-  //   set({ loadingOrders: true });
-  //   try {
-  //     const ordersSnapshot = await getDocs(collection(fireDB, "orders"));
-  //     const orders = ordersSnapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     set({ orders: orders, loadingOrders: false });
-  //   } catch (error) {
-  //     console.error("Error fetching orders: ", error);
-  //     set({ loadingOrders: false });
-  //   }
-  // },
+  fetchAllOrders: async () => {
+    set({ loadingOrders: true });
+    try {
+      const q = query(collection(fireDB, "orders"));
+      const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+        let OrderArray: any = [];
+        QuerySnapshot.forEach((doc) => {
+          OrderArray.push({ ...doc.data(), id: doc.id });
+        });
+        set({ orders: OrderArray, loadingOrders: false });
+      });
+      return () => unsubscribe(); 
+    } catch (error) {
+      console.error("Error fetching orders: ", error);
+      set({ loadingOrders: false });
+    }
+  },
 
   // Fetch a single order by its ID and update the state
   // fetchSingleOrder: async (orderId: string) => {
