@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     },
   });
 
-  const orderDetails = basketItems.map((item: ProductT) => `${item.title} - ${item.quantity} buyurtma qilingan`).join(',').join('\n');
+  const orderDetails = basketItems.map((item: ProductT) => `${item.title} - ${item.quantity} buyurtma qilingan`).join('\n');
 
   const mailOptions = {
     from: "megahomeweb@gmail.com",
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       Order Details:
       Name: ${clientName} ${clientLastName}
       Phone: ${clientPhone}
-      Date: ${date}
+      Date: ${new Date(date.seconds * 1000).toLocaleString()}
 
       items:
       ${orderDetails}
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Failed to send email:', error);
     return new Response(JSON.stringify({ message: "Failed to send email" }), {
-      status: 200,
+      status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }

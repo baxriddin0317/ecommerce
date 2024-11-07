@@ -5,12 +5,14 @@ import { Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
 
 interface props {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const SubmitModal = ({ setOpen }: props) => {
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -60,6 +62,7 @@ const SubmitModal = ({ setOpen }: props) => {
     };
       
     try {
+      setLoading(true)
       await addOrder(submitData);
       await fetch('/api/sendOrderEmail', {
         method: 'POST',
@@ -67,6 +70,7 @@ const SubmitModal = ({ setOpen }: props) => {
         body: JSON.stringify(submitData),
       });
       clearBasket();
+      setLoading(false)
       toast.success("Add order successfully");
       navigate.push("/");
     } catch (error) {
@@ -144,9 +148,9 @@ const SubmitModal = ({ setOpen }: props) => {
           <button
             onClick={handleSubmit}
             type="button"
-            className="bg-indigo-500 transition-all ease-in-out hover:bg-indigo-600 rounded-xl max-w-lg w-full text-white p-2"
+            className="flex items-center justify-center bg-indigo-500 transition-all ease-in-out hover:bg-indigo-600 rounded-xl max-w-lg w-full text-white p-2"
           >
-            Buyurtmani Yuborish
+            {loading ? <div className="size-8"><Loader /></div> : "Buyurtmani Yuborish"}
           </button>
         </div>
       </div>
