@@ -1,23 +1,36 @@
 "use client"
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB } from "../../firebase/FirebaseConfig";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, DocumentData, onSnapshot, query, where } from "firebase/firestore";
 import Loader from '../Loader';
 import Link from 'next/link';
+
+interface User {
+    name: string;
+    uid: string;
+    time: {
+      seconds: number;
+      nanoseconds: number;
+    };
+    date: string;
+    role: string;
+    email: string;
+  }
 
 const LoginContent = () => {
   const [loading, setLoading] = useState(false);
 
-  // navigate 
-  const navigate = useRouter();
    // User Signup State 
    const [userLogin, setUserLogin] = useState({
     email: "",
     password: ""
 });
+
+const isUser = (data: DocumentData): data is User => {
+    return data && typeof data.uid === "string" && typeof data.role === "string";
+  };
 
 /**========================================================================
 *========================================================================**/
@@ -38,20 +51,30 @@ const userLoginFunction = async () => {
                 where('uid', '==', users?.user?.uid)
             );
             const data = onSnapshot(q, (QuerySnapshot) => {
-                let user: any;
-                QuerySnapshot.forEach((doc) => user = doc.data());
-                localStorage.setItem("users", JSON.stringify(user) )
-                setUserLogin({
-                    email: "",
-                    password: ""
-                })
-                toast.success("Login Successfully");
-                console.log(user)
-
-                if(user.role === "user") {
-                    navigate.push('/');
-                }else{
-                    navigate.push('/admin-dashboard');
+                let user: User | null = null;
+                QuerySnapshot.forEach((doc) => {
+                    const docData = doc.data();
+                    if (isUser(docData)) {
+                      user = docData;
+                    }
+                  });
+                // QuerySnapshot.forEach((doc) => user = doc.data());
+                if (user) {
+                    localStorage.setItem("users", JSON.stringify(user) )
+                    setUserLogin({
+                        email: "",
+                        password: ""
+                    })
+                    toast.success("Login Successfully");
+                    console.log(user)
+    
+                    // if(user.role === "user") {
+                    //     navigate.push('/');
+                    // }else{
+                    //     navigate.push('/admin-dashboard');
+                    // }
+                } else {
+                    toast.error("User not found or invalid data");
                 }
                 setLoading(false);
             });

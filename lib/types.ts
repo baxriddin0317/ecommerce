@@ -8,8 +8,8 @@ export interface ProductT {
   category: string;
   description: string;
   quantity: number;
-  time: any;
-  date: any;
+  time: Timestamp;
+  date: Timestamp;
   storageFileId: string;
 }
 
@@ -29,7 +29,7 @@ export interface Order {
   clientName: string;
   clientLastName: string;
   clientPhone: string;
-  date: any;
+  date: Timestamp;
   basketItems: ProductT[];
   totalPrice: number;
   totalQuantity: number;

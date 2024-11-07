@@ -1,6 +1,7 @@
 "use client";
 import useCartProductStore from "@/zustand/useCartStore";
 import { useOrderStore } from "@/zustand/useOrderStore";
+import { Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
@@ -52,7 +53,7 @@ const SubmitModal = ({ setOpen }: props) => {
       clientName: firstName,
       clientLastName: lastName,
       clientPhone: phoneNumber,
-      date: new Date().toISOString(),
+      date: Timestamp.now(),
       basketItems: cartProducts,
       totalPrice: totalPrice,
       totalQuantity: totalQuantity,

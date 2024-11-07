@@ -4,11 +4,14 @@ import { fireStorage } from "@/firebase/FirebaseConfig";
 import { ImageT, ProductT } from "@/lib/types";
 import useCategoryStore from "@/zustand/useCategoryStore";
 import useProductStore from "@/zustand/useProductStore";
+import { Timestamp } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
+const emptyTimestamp = new Timestamp(0, 0);
 
 const UpdateProductContent = ({ params }: { params: { id: string } }) => {
   const navigate = useRouter();
@@ -23,8 +26,8 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
     category: '',
     description: '',
     quantity: 0,
-    time: product?.time || '',
-    date: product?.date || '',
+    time: product?.time || emptyTimestamp,
+    date: product?.date || emptyTimestamp,
     storageFileId: ''
   });
 
