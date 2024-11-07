@@ -21,3 +21,14 @@ export interface ImageT {
   url: string;
   path: string;
 }
+
+export interface Order {
+  id: string;
+  clientName: string;
+  clientLastName: string;
+  clientPhone: string;
+  date: any;
+  basketItems: ProductT[];
+  totalPrice: number;
+  totalQuantity: number;
+}

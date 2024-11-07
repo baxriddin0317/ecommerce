@@ -23,7 +23,14 @@ const Admin = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const userString = localStorage.getItem('users');
-      setUser(userString ? JSON.parse(userString) : null);
+      if(userString && userString != undefined){
+        setUser(JSON.parse(userString));
+      }else {
+        setTimeout(() => {
+          router.push('/');
+        }, 200);
+      }
+      
     }
   }, []);
 

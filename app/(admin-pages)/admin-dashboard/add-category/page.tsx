@@ -38,7 +38,6 @@ const AddCategory = () => {
   };
 
   const handleAddCategory = async () => {
-    
     try {
       await addCategory(newCategory);
       toast.success("Add category successfully");
