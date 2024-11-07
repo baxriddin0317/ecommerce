@@ -1,6 +1,7 @@
 "use client";
 import useCartProductStore from "@/zustand/useCartStore";
 import { useOrderStore } from "@/zustand/useOrderStore";
+import firebase from "firebase/compat/app";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
@@ -36,7 +37,7 @@ const SubmitModal = ({ setOpen }: props) => {
 
   const handleSubmit = async () => {
     if(cartProducts.length === 0) {
-      return toast.error("Empty");
+      return toast.error("Your basket is empty.");
     };
 
     if (
@@ -52,20 +53,25 @@ const SubmitModal = ({ setOpen }: props) => {
       clientName: firstName,
       clientLastName: lastName,
       clientPhone: phoneNumber,
-      date: "",
+      date: new Date().toISOString(),
       basketItems: cartProducts,
       totalPrice: totalPrice,
       totalQuantity: totalQuantity,
     };
-
+      
     try {
       await addOrder(submitData);
+      await fetch('/api/sendOrderEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submitData),
+      });
       clearBasket();
-      toast.success("Add category successfully");
+      toast.success("Add order successfully");
       navigate.push("/");
     } catch (error) {
       console.log(error);
-      toast.error("Add product failed");
+      toast.error("Add order failed");
     }
   };
 
