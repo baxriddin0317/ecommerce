@@ -7,7 +7,7 @@ import {
   Transition,
 } from "@headlessui/react";
 import React, { useEffect } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 import Loader from "../Loader";
 import Image from "next/image";
 
