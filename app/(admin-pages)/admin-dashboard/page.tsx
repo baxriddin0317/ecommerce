@@ -5,6 +5,7 @@ import Loader from "@/components/Loader";
 import useCategoryStore from "@/zustand/useCategoryStore";
 import useProductStore from "@/zustand/useProductStore";
 import { Popover, PopoverButton, PopoverPanel, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -51,9 +52,14 @@ const Admin = () => {
       {/* Top */}
       <div className="mb-5 px-5 mt-5">
         <div className="flex items-center justify-between bg-pink-50 px-5 py-2 border border-pink-100 rounded-lg">
-          <h1 className="text-2xl font-bold text-pink-500">
-            Admin Dashboard
-          </h1>
+          <div className="flex items-end gap-4">
+            <h1 className="text-2xl font-bold text-pink-500">
+              Admin Dashboard
+            </h1>
+            <Link className="font-medium text-pink-500 hover:text-pink-700" href={'/admin-dashboard/orders'}>
+              Orders
+            </Link>
+          </div>
           {/* image  */}
           <Popover className="relative">
             <PopoverButton className="flex items-center outline-none">
