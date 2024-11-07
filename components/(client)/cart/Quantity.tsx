@@ -1,11 +1,10 @@
 import useCartProductStore from "@/zustand/useCartStore";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import { HiMinus } from "react-icons/hi";
 import { LuPlus } from "react-icons/lu";
 
 const Quantity = ({id}: {id:string}) => {
-  const { cartProducts, incrementQuantity, decrementQuantity, getItemQuantity, calculateTotals } = useCartProductStore();
+  const { incrementQuantity, decrementQuantity, getItemQuantity, calculateTotals } = useCartProductStore();
   
   const quantityInBasket = getItemQuantity(id);
 

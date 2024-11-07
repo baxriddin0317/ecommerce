@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 
 const AddCategory = () => {
   const { addCategory, loading } = useCategoryStore();
-  const [load, setLoad] = useState(false);
    // navigate
   const navigate = useRouter();
   const [newCategory, setNewCategory] = useState({
@@ -20,7 +19,6 @@ const AddCategory = () => {
 
   const handleImageUpload = async (files: FileList | null) => {
     if (!files) return;
-    setLoad(true);
 
     const uploadPromises = Array.from(files).map(async (file) => {
       const storageRef = ref(fireStorage, `categories/${file.name}`);
@@ -34,7 +32,6 @@ const AddCategory = () => {
       ...prevProduct,
       categoryImgUrl: imageUrls,
     }));
-    setLoad(false);
   };
 
   const handleAddCategory = async () => {

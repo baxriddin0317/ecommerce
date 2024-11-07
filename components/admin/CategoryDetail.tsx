@@ -1,7 +1,6 @@
 
 import useCategoryStore from "@/zustand/useCategoryStore";
 import Link from "next/link";
-import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import Loader from "../Loader";
 import { useEffect } from "react";

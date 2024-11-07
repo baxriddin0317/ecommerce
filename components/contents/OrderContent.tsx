@@ -9,6 +9,7 @@ import {
 import React, { useEffect } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Loader from "../Loader";
+import Image from "next/image";
 
 const OrderContent = () => {
   const { orders, fetchAllOrders, loadingOrders } = useOrderStore();
@@ -104,7 +105,7 @@ const OrderContent = () => {
                               </td>
                               <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
                                 <div className="flex justify-center">
-                                  <img className="w-20" src={productImageUrl[0].url} alt="" />
+                                  <Image width={80} height={80} className="w-20" src={productImageUrl[0].url} alt="" />
                                 </div>
                               </td>
                               <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">

@@ -1,6 +1,6 @@
 "use client";
 import useCartProductStore from "@/zustand/useCartStore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Quantity from "../(client)/cart/Quantity";
 import { BsCartDash } from "react-icons/bs";
 import SubmitModal from "../(client)/Modal";

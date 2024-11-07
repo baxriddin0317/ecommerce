@@ -5,6 +5,7 @@ import { ImageT, ProductT } from "@/lib/types";
 import useCategoryStore from "@/zustand/useCategoryStore";
 import useProductStore from "@/zustand/useProductStore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -138,7 +139,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
         <div className="mb-3 flex flex-wrap gap-2">
           {updatedProduct.productImageUrl.map((img, index) => (
             <div key={index} className="relative w-20 h-20">
-              <img src={img.url} alt={`Product Image ${index + 1}`} className="w-full h-full rounded-md object-cover" />
+              <Image src={img.url} alt={`Product Image ${index + 1}`} className="w-full h-full rounded-md object-cover" fill />
               <button
                 onClick={() => handleDeleteImage(img.path)}
                 className="absolute size-5 top-0 right-0 bg-red-500 text-white rounded-full p-1 text-[8px]"

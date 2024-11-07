@@ -1,3 +1,4 @@
+import { ProductT } from '@/lib/types';
 import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
     },
   });
 
-  const orderDetails = basketItems.map((item: any) => `${item.title} - ${item.quantity} buyurtma qilingan`).join(',').join('\n');
+  const orderDetails = basketItems.map((item: ProductT) => `${item.title} - ${item.quantity} buyurtma qilingan`).join(',').join('\n');
 
   const mailOptions = {
     from: "megahomeweb@gmail.com",

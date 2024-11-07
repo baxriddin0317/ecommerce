@@ -2,15 +2,17 @@
 import CategoryDetail from "@/components/admin/CategoryDetail";
 import ProductDetail from "@/components/admin/ProductDetail";
 import Loader from "@/components/Loader";
+import { userT } from "@/lib/types";
 import useCategoryStore from "@/zustand/useCategoryStore";
 import useProductStore from "@/zustand/useProductStore";
 import { Popover, PopoverButton, PopoverPanel, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Admin = () => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<userT | null>(null);
   const { products, fetchProducts } = useProductStore();
   const { categories, fetchCategories } = useCategoryStore();
 
@@ -62,7 +64,9 @@ const Admin = () => {
             {/* image  */}
             <Popover className="relative lg:ml-5">
               <PopoverButton className="flex items-center outline-none">
-                <img
+                <Image
+                  width={56}
+                  height={56}
                   className="size-14"
                   src="https://cdn-icons-png.flaticon.com/128/2202/2202112.png"
                   alt=""

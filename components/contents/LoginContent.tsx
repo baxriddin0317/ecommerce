@@ -5,7 +5,6 @@ import toast from 'react-hot-toast';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { userI } from './SignUpContent';
 import Loader from '../Loader';
 import Link from 'next/link';
 
@@ -120,7 +119,7 @@ return (
                 </button>
             </div>
             <div>
-                <h2 className='text-black'>Don't Have an account <Link className=' text-pink-500 font-bold' href={'/sign-up'}>Signup</Link></h2>
+                <h2 className='text-black'>Don&apos;t Have an account <Link className=' text-pink-500 font-bold' href={'/sign-up'}>Signup</Link></h2>
             </div>
         </div>
     </div>

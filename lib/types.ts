@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface ProductT {
   id: string;
   title: string;
@@ -6,8 +8,8 @@ export interface ProductT {
   category: string;
   description: string;
   quantity: number;
-  time: any; // Adjust based on your timestamp type
-  date: any; // Adjust based on your date type
+  time: any;
+  date: any;
   storageFileId: string;
 }
 
@@ -31,4 +33,13 @@ export interface Order {
   basketItems: ProductT[];
   totalPrice: number;
   totalQuantity: number;
+}
+
+export interface  userT {
+  name: string;
+  email: string | null;
+  uid: string;
+  role: string;
+  time: Timestamp;
+  date: string;
 }

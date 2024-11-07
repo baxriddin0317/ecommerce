@@ -86,7 +86,7 @@ const ProductItem = ({ id }: { id: string }) => {
             {load ? <Loader /> : (
               <>
                 <BsCartDash className="text-white text-xl" />
-                <span>Savatga qo'shish</span>
+                <span>Savatga qo&apos;shish</span>
               </>
             )}
           </button>

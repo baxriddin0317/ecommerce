@@ -14,7 +14,7 @@ const CategoryHeader = ({ heading, link }: props) => {
           href={link}
           className="hidden sm:block rounded-full bg-gray-100 text-indigo-600 px-2 py-1 text-xs font-medium"
         >
-          Barchasini ko'rish
+          Barchasini ko&apos;rish
         </a>
       </div>
     </>

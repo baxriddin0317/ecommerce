@@ -1,7 +1,6 @@
 "use client";
 import useCartProductStore from "@/zustand/useCartStore";
 import { useOrderStore } from "@/zustand/useOrderStore";
-import firebase from "firebase/compat/app";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
