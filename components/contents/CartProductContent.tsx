@@ -3,7 +3,7 @@ import useCartProductStore from "@/zustand/useCartStore";
 import React, { useState } from "react";
 import Quantity from "../(client)/cart/Quantity";
 import { BsCartDash } from "react-icons/bs";
-import SubmitModal from "../(client)/Modal";
+import SubmitModal from "../Modal";
 import Image from "next/image";
 
 const CartProductContent = () => {
