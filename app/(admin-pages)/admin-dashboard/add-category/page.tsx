@@ -1,7 +1,7 @@
 "use client"
 import Loader from '@/components/Loader'
 import { fireStorage } from '@/firebase/FirebaseConfig';
-import { CategoryI } from '@/lib/types';
+import { CategoryI, ImageT } from '@/lib/types';
 import useCategoryStore from '@/zustand/useCategoryStore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRouter } from 'next/navigation';
@@ -11,17 +11,20 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const AddCategory = () => {
+  const [load, setLoad] = useState(false);
+
   const { addCategory, loading } = useCategoryStore();
   const navigate = useRouter();
   const [newCategory, setNewCategory] = useState<CategoryI>({
     id: "",
     name: "",
-    categoryImgUrl: [],
+    categoryImgUrl: [] as ImageT[],
     storageFileId: ""
   });
 
   const handleImageUpload = async (files: FileList | null) => {
     if (!files) return;
+    setLoad(true);
 
     const uuid = uuidv4();
     const uploadPromises = Array.from(files).map(async (file) => {
@@ -38,6 +41,8 @@ const AddCategory = () => {
       categoryImgUrl: imageUrls,
       storageFileId: uuid
     }));
+    setLoad(false);
+
   };
 
   const handleAddCategory = async () => {
@@ -47,6 +52,7 @@ const AddCategory = () => {
     ) {
       return toast.error("all fields are required");
     }
+    
     try {
       await addCategory(newCategory);
       toast.success("Add category successfully");
@@ -59,7 +65,7 @@ const AddCategory = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      {loading && <Loader />}
+      {loading || load && <Loader />}
       {/* Login Form  */}
       <div className="login_Form bg-pink-50 px-8 py-6 border border-pink-100 rounded-xl shadow-md">
         {/* Top Heading  */}
@@ -82,7 +88,7 @@ const AddCategory = () => {
           <input
             type="file"
             multiple
-            name="productImageUrl"
+            name="categoryImageUrl"
             accept="image/*"
             onChange={(e) => handleImageUpload(e.target.files)}
             placeholder="Category Image Url"
