@@ -16,7 +16,8 @@ export interface ProductT {
 export interface CategoryI {
   id: string;
   name: string;
-  categoryImgUrl: string[];
+  categoryImgUrl: ImageT[];
+  storageFileId: string;
 }
 
 export interface ImageT {

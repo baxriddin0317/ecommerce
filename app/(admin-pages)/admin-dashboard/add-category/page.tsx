@@ -1,40 +1,52 @@
 "use client"
 import Loader from '@/components/Loader'
 import { fireStorage } from '@/firebase/FirebaseConfig';
+import { CategoryI } from '@/lib/types';
 import useCategoryStore from '@/zustand/useCategoryStore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const AddCategory = () => {
   const { addCategory, loading } = useCategoryStore();
-   // navigate
   const navigate = useRouter();
-  const [newCategory, setNewCategory] = useState({
+  const [newCategory, setNewCategory] = useState<CategoryI>({
     id: "",
     name: "",
-    categoryImgUrl: [] as string[],
+    categoryImgUrl: [],
+    storageFileId: ""
   });
 
   const handleImageUpload = async (files: FileList | null) => {
     if (!files) return;
 
+    const uuid = uuidv4();
     const uploadPromises = Array.from(files).map(async (file) => {
-      const storageRef = ref(fireStorage, `categories/${file.name}`);
+      const storageRef = newCategory.storageFileId.length === 0 ? ref(fireStorage, `categories/${uuid}/${file.name}`) : ref(fireStorage, `categories/${newCategory.storageFileId}/${file.name}`);
       await uploadBytes(storageRef, file);
-      return await getDownloadURL(storageRef);
+      const downloadUrl = await getDownloadURL(storageRef);
+      return { url: downloadUrl, path: storageRef.fullPath };
     });
-    
+
     const imageUrls = await Promise.all(uploadPromises);
-    console.log(imageUrls);
-    setNewCategory((prevProduct) => ({
-      ...prevProduct,
+    
+    setNewCategory((prevCategory) => ({
+      ...prevCategory,
       categoryImgUrl: imageUrls,
+      storageFileId: uuid
     }));
   };
 
   const handleAddCategory = async () => {
+    if (
+      newCategory.name == "" ||
+      newCategory.categoryImgUrl.length == 0
+    ) {
+      return toast.error("all fields are required");
+    }
     try {
       await addCategory(newCategory);
       toast.success("Add category successfully");

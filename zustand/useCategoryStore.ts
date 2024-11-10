@@ -1,6 +1,6 @@
 import { fireDB } from '@/firebase/FirebaseConfig';
 import { CategoryI } from '@/lib/types';
-import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, query } from 'firebase/firestore';
 import {create} from 'zustand';
 
 interface CategoryStoreI {
@@ -21,8 +21,8 @@ const useCategoryStore = create<CategoryStoreI>((set) => ({
   addCategory: async (newCategory: CategoryI) => {
     set({ loading: true });
     try {
-      const categoryDoc = doc(collection(fireDB, 'categories'));
-      await setDoc(categoryDoc, newCategory);
+      const categoryDoc = collection(fireDB, 'categories');
+      await addDoc(categoryDoc, newCategory);
       set({ loading: false });
     } catch (error) {
       console.error('Error adding category:', error);
