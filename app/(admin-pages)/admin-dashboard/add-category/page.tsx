@@ -98,6 +98,7 @@ const AddCategory = () => {
         {/* Add Product Button  */}
         <div className="mb-3">
           <button
+            disabled={load}
             onClick={handleAddCategory}
             type="button"
             className="bg-pink-500 hover:bg-pink-600 w-full text-white text-center py-2 font-bold rounded-md "
