@@ -31,7 +31,7 @@ const CategoryItem = ({ params }: { params: { id: string } }) => {
           <h2 className="text-xl sm:text-2xl font-bold capitalize">{category?.name}</h2>
         </div>
 
-        <div className="flex gap-3.5 min-h-72">
+        <div className="flex gap-5 flex-wrap min-h-72">
           {products.filter(product => product.category === category?.name).map(product => (
             <Card key={product.id} title={product.title} imgUrl={product.productImageUrl} price={product.price} href={`/products/${product.id}`} />
           ))}

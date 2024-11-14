@@ -46,7 +46,7 @@ const SearchContent = () => {
     <>
       <input
         type="text"
-        placeholder="Type '/' to open command palette"
+        placeholder="Mahsulot izlash"
         onFocus={() => setCommandPaletteOpen(true)}
         onKeyDown={(e) => {
           if (e.key === "/") {
@@ -70,7 +70,7 @@ const SearchContent = () => {
           <div className="p-4 border-b border-gray-200">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Mahsulotlarni izlash..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
