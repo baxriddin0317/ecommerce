@@ -13,7 +13,7 @@ const Card = ({title, imgUrl, price, href}: props) => {
   return (
     <>
       <a href={href} className="rounded-lg w-fit shadow">
-        <div className="w-56 h-48 relative rounded-xl overflow-hidden p-0.5">
+        <div className="w-full h-72 md:w-56 md:h-48 relative rounded-xl overflow-hidden p-0.5">
           <Image fill className='absolute size-full object-cover' src={imgUrl[0].url ? imgUrl[0].url : `/sample.webp`} alt='' />
         </div>
         <div className="space-y-2 py-2 px-1.5">
