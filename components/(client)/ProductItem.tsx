@@ -52,7 +52,7 @@ const ProductItem = ({ id }: { id: string }) => {
   return (
     <div className="flex gap-10 py-5">
       <div className="relative rounded-xl overflow-hidden w-full h-[512px]">
-        <Image fill src={product.productImageUrl[0].url} alt="" className="w-full h-full object-contain" />
+        <Image fill src={product.productImageUrl[0].url} alt="" className="absolute hover:scale-105 transition-all duration-500 w-full h-full object-cover" />
       </div>
       <div className="space-y-9 w-full">
         <h1 className="text-xl">{product?.title}</h1>
