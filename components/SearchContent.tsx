@@ -54,7 +54,7 @@ const SearchContent = () => {
             setCommandPaletteOpen(true);
           }
         }}
-        className="p-2 border  border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+        className="p-2 border hidden sm:block border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
       />
 
       {isCommandPaletteOpen && <div
