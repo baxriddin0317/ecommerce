@@ -92,7 +92,7 @@ const SearchContent = () => {
               >
                 <Link href={`/products/${command.id}`} key={command.id} className='flex items-center gap-4'>
                     <div className='rounded-lg w-12 h-12 relative overflow-hidden'>
-                      <Image fill alt='rahbar' src={command.productImageUrl[0].url} className="w-full h-full object-cover" />
+                      <Image fill alt='rahbar' src={command.productImageUrl.length != 0 ? command.productImageUrl[0].url : ""} className="w-full h-full object-cover" />
                     </div>
 
                     <span className='text-xs'>
