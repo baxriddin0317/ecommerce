@@ -17,6 +17,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
   const navigate = useRouter();
   const { product, loading, fetchSingleProduct, updateProduct } = useProductStore();
   const { categories, fetchCategories } = useCategoryStore();
+  const [load, setLoad] = useState(false);
 
   const [updatedProduct, setUpdatedProduct] = useState<ProductT>({
     id: params.id || '',
@@ -60,7 +61,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
 
   const handleImageUpload = async (files: FileList | null) => {
     if (!files) return;
-    
+    setLoad(true);
     const uploadPromises = Array.from(files).map(async (file) => {
       const storageRef = ref(fireStorage, `products/${updatedProduct.storageFileId}/${file.name}`);
       await uploadBytes(storageRef, file);
@@ -73,6 +74,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
       ...prevProduct,
       productImageUrl: [...prevProduct.productImageUrl, ...imageUrls],
     }));
+    setLoad(false);
   };
 
   console.log(product);
@@ -107,7 +109,7 @@ const UpdateProductContent = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-    
+      {load && <Loader />}
       {/* Login Form  */}
       <div className="login_Form bg-pink-50 px-8 py-6 border border-pink-100 rounded-xl shadow-md">
         {/* Top Heading  */}
