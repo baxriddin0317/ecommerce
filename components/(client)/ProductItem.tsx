@@ -50,11 +50,11 @@ const ProductItem = ({ id }: { id: string }) => {
   };
 
   return (
-    <div className="flex gap-10 py-5">
+    <div className="flex flex-col md:flex-row gap-6 md:gap-10 md:py-5">
       <div className="relative rounded-xl overflow-hidden w-full h-[512px]">
         <Image fill src={product.productImageUrl[0].url} alt="" className="absolute hover:scale-105 transition-all duration-500 w-full h-full object-cover" />
       </div>
-      <div className="space-y-9 w-full">
+      <div className="space-y-5 md:space-y-9 w-full">
         <h1 className="text-xl">{product?.title}</h1>
         <div className="space-y-5">
           <div className="rounded-xl border border-gray-300 flex items-center gap-8 w-fit py-1.5 px-2">
