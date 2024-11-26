@@ -9,6 +9,7 @@ import { BsCartDash } from "react-icons/bs";
 import { LuPlus } from "react-icons/lu";
 import { HiMinus } from "react-icons/hi";
 import Image from "next/image";
+import { FormattedPrice } from "@/utils";
 
 const ProductItem = ({ id }: { id: string }) => {
   const { fetchSingleProduct, loading, product } = useProductStore();
@@ -77,7 +78,7 @@ const ProductItem = ({ id }: { id: string }) => {
           </div>
           <div>
             <div className="text-sm text-gray-500">Umumiy</div>
-            <div className="font-bold">{product.price} UZS</div>
+            <div className="font-bold">{FormattedPrice(product.price)} UZS</div>
           </div>
           <button
             onClick={handleSubmit}

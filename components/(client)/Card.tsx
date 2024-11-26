@@ -1,6 +1,7 @@
 import { ImageT } from '@/lib/types';
 import Image from 'next/image'
 import React from 'react'
+import {FormattedPrice} from "@/utils"
 
 interface props {
   title: string;
@@ -10,6 +11,7 @@ interface props {
 }
 
 const Card = ({title, imgUrl, price, href}: props) => {
+  
   return (
     <>
       <a href={href} className="rounded-lg w-fit shadow">
@@ -21,7 +23,7 @@ const Card = ({title, imgUrl, price, href}: props) => {
             {title}
           </span>
           <div className="flex items-end justify-between">
-            <span className="text-sm font-medium">{price} UZS</span>
+            <span className="text-sm font-medium">{FormattedPrice(price)} UZS</span>
             <button type="button">
               <svg width={36} height={36} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width={36} height={36} rx={8} fill="white" />
