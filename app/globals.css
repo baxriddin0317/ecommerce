@@ -6,3 +6,7 @@
 .swiper-pagination {
   @apply !bottom-4
 }
+
+main {
+  @apply mt-20
+}
