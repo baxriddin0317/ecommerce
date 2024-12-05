@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { ProductT } from "@/lib/types";
 import { deleteObject, listAll, ref } from "firebase/storage";
 import { fireStorage } from "@/firebase/FirebaseConfig";
+import {FormattedPrice} from "@/utils"
 import Image from "next/image";
 
 const ProductDetail = () => {
@@ -120,7 +121,7 @@ const ProductDetail = () => {
                     {title}
                   </td>
                   <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
-                    ${price}
+                  {FormattedPrice(price)} UZS
                   </td>
                   <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0 border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
                     {category}

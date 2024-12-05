@@ -34,9 +34,9 @@ const Header = () => {
     <header className="shadow border-b fixed top-0 left-0 w-full z-20 bg-white">
       <div className="max-w-7xl mx-auto flex items-center justify-between py-3.5 px-4 lg:px-10">
         <div className="flex items-center gap-5">
-          <div className="w-24 h-12 relative shrink-0">
+          <a href='/' className="w-24 h-12 relative shrink-0">
             <Image fill alt='logo' src="/logo.png" className="w-full h-full" />
-          </div>
+          </a>
           <SearchContent />
         </div>
         <div className='flex items-center gap-4'>

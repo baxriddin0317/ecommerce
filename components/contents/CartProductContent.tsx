@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Quantity from "../(client)/cart/Quantity";
 import { BsCartDash } from "react-icons/bs";
 import SubmitModal from "../Modal";
+import {FormattedPrice} from "@/utils"
 import Image from "next/image";
 
 const CartProductContent = () => {
@@ -14,7 +15,7 @@ const CartProductContent = () => {
     <div className="grid lg:grid-cols-6 gap-6">
       <div className="order-2 bg-white shadow-md border border-gray-300 rounded-xl p-5 flex lg:col-span-4 flex-col gap-10 py-5">
         {cartProducts.map((cart) => (
-          <div key={cart.id} className="flex flex-wrap items-center">
+          <div key={cart.id} className="flex flex-wrap items-center gap-4">
             <div className="relative size-44 overflow-hidden rounded-md">
               <Image
                 fill
@@ -23,9 +24,9 @@ const CartProductContent = () => {
                 alt=""
               />
             </div>
-            <div className="flex flex-col">
-              <h3>{cart.title}</h3>
-              <p>{cart.price}UZS</p>
+            <div className="flex flex-col gap-2">
+              <h3 className="text-xl">{cart.title}</h3>
+              <p className="font-bold">{FormattedPrice(cart.price)} UZS</p>
             </div>
             <Quantity id={cart.id} />
           </div>
